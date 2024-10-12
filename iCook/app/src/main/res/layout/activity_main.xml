@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp">
+
+    <!-- Adiciona a logo -->
+    <ImageView
+        android:id="@+id/logoImageView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/ic_icook"
+        android:contentDescription="Logo do aplicativo"
+        android:layout_marginBottom="32dp" />
+
+    <!-- Campo de texto para o nome de usuário -->
+    <EditText
+        android:id="@+id/etUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Usuário"
+        android:padding="12dp"
+        android:textSize="16sp"
+        android:backgroundTint="#4A148C"
+        android:inputType="text"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Campo de texto para a senha -->
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Senha"
+        android:padding="12dp"
+        android:textSize="16sp"
+        android:backgroundTint="#4A148C"
+        android:inputType="textPassword"
+        android:layout_marginBottom="24dp"/>
+
+    <!-- Botão de login -->
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:backgroundTint="#4A148C"/>
+</LinearLayout>

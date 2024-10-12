@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">iCook</string>
+    <string name="recipe_image">Recipe Image</string>
+    <string name="prep_time_icon">Preparation Time Icon</string>
+</resources>
