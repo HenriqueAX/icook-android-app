@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 class RecipeResultActivity : AppCompatActivity() {
 
     private lateinit var recipeListView: ListView
+    private lateinit var adapter: RecipeAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -14,14 +15,22 @@ class RecipeResultActivity : AppCompatActivity() {
 
         recipeListView = findViewById(R.id.recipeListView)
 
-        // Exemplo de dados - Adicionando o valor para o parâmetro 'rating'
-        val recipes = listOf(
+        val query = intent.getStringExtra("QUERY") ?: ""
+        val allRecipes = loadRecipes() // Carregar suas receitas
+        val filteredRecipes = allRecipes.filter { recipe ->
+            recipe.name.contains(query, ignoreCase = true)
+        }
+
+        adapter = RecipeAdapter(this, filteredRecipes)
+        recipeListView.adapter = adapter
+    }
+
+    private fun loadRecipes(): List<Recipe> {
+        // Carregue suas receitas aqui (substitua por seu método de carregamento)
+        return listOf(
             Recipe("Bolo de Chocolate", "40 min", 5),
             Recipe("Bolo de Cenoura", "50 min", 4),
             Recipe("Bolo de Laranja", "35 min", 4)
         )
-
-        val adapter = RecipeAdapter(this, recipes)
-        recipeListView.adapter = adapter
     }
 }
