@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class RecipeDetailActivity : AppCompatActivity() {
 
@@ -13,18 +15,17 @@ class RecipeDetailActivity : AppCompatActivity() {
 
         val recipeName: TextView = findViewById(R.id.recipeName)
         val prepTime: TextView = findViewById(R.id.prepTime)
-        val ingredients: TextView = findViewById(R.id.ingredients)
+        val rating: TextView = findViewById(R.id.rating)
+        val ingredientsRecyclerView: RecyclerView = findViewById(R.id.ingredientsRecyclerView)
         val instructions: TextView = findViewById(R.id.instructions)
         val recipeImage: ImageView = findViewById(R.id.recipeImage)
-        val rating: TextView = findViewById(R.id.rating) // Nova referência para avaliação
 
         val recipe = intent.getSerializableExtra("RECIPE") as Recipe
 
         recipeName.text = recipe.name
         prepTime.text = recipe.prepTime
-        ingredients.text = recipe.ingredients
-        instructions.text = recipe.instructions
         rating.text = "${recipe.rating}/5" // Definindo a avaliação
+        instructions.text = recipe.instructions
 
         // Defina a imagem da receita
         when (recipe.name) {
@@ -33,5 +34,9 @@ class RecipeDetailActivity : AppCompatActivity() {
             "Bolo de Laranja" -> recipeImage.setImageResource(R.drawable.bolo_laranja)
             else -> recipeImage.setImageResource(R.drawable.recipe_placeholder)
         }
+
+        // Configure o RecyclerView
+        ingredientsRecyclerView.layoutManager = LinearLayoutManager(this)
+        ingredientsRecyclerView.adapter = IngredientAdapter(recipe.ingredients.split(", ")) // Supondo que os ingredientes sejam passados como uma string separada por vírgulas
     }
 }
