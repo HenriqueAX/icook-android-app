@@ -16,6 +16,7 @@ class RecipeDetailActivity : AppCompatActivity() {
         val ingredients: TextView = findViewById(R.id.ingredients)
         val instructions: TextView = findViewById(R.id.instructions)
         val recipeImage: ImageView = findViewById(R.id.recipeImage)
+        val rating: TextView = findViewById(R.id.rating) // Nova referência para avaliação
 
         val recipe = intent.getSerializableExtra("RECIPE") as Recipe
 
@@ -23,6 +24,7 @@ class RecipeDetailActivity : AppCompatActivity() {
         prepTime.text = recipe.prepTime
         ingredients.text = recipe.ingredients
         instructions.text = recipe.instructions
+        rating.text = "${recipe.rating}/5" // Definindo a avaliação
 
         // Defina a imagem da receita
         when (recipe.name) {
