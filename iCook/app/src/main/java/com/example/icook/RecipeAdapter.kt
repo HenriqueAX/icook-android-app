@@ -1,6 +1,7 @@
 package com.example.icook
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,14 +34,21 @@ class RecipeAdapter(private val context: Context, private val recipes: List<Reci
         val recipe = recipes[position]
         recipeName.text = recipe.name
         prepTime.text = recipe.prepTime
-        rating.text = "${recipe.rating}/5"
+        rating.text = "${recipe.rating}/5" // Exibe a avaliação no formato correto
 
-        // Associe uma imagem baseada na receita
+        // Associe a imagem baseada na receita
         when (recipe.name) {
             "Bolo de Chocolate" -> recipeImage.setImageResource(R.drawable.bolo_chocolate)
             "Bolo de Cenoura" -> recipeImage.setImageResource(R.drawable.bolo_cenoura)
             "Bolo de Laranja" -> recipeImage.setImageResource(R.drawable.bolo_laranja)
             else -> recipeImage.setImageResource(R.drawable.recipe_placeholder)
+        }
+
+        // Navegação para detalhes da receita
+        view.setOnClickListener {
+            val intent = Intent(context, RecipeDetailActivity::class.java)
+            intent.putExtra("RECIPE", recipe)
+            context.startActivity(intent)
         }
 
         return view
