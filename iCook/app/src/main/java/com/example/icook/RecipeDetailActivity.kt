@@ -35,8 +35,7 @@ class RecipeDetailActivity : AppCompatActivity() {
             else -> recipeImage.setImageResource(R.drawable.recipe_placeholder)
         }
 
-        // Configure o RecyclerView
         ingredientsRecyclerView.layoutManager = LinearLayoutManager(this)
-        ingredientsRecyclerView.adapter = IngredientAdapter(recipe.ingredients.split(", ")) // Supondo que os ingredientes sejam passados como uma string separada por vírgulas
+        ingredientsRecyclerView.adapter = IngredientAdapter(recipe.ingredients.split("\n"))
     }
 }

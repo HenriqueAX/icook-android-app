@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 class IngredientAdapter(private val ingredients: List<String>) : RecyclerView.Adapter<IngredientAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val bulletPoint: TextView = view.findViewById(R.id.bulletPoint)
         val ingredientText: TextView = view.findViewById(R.id.ingredientText)
     }
 
@@ -20,7 +21,9 @@ class IngredientAdapter(private val ingredients: List<String>) : RecyclerView.Ad
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.ingredientText.text = ingredients[position]
+        // A bolinha já está no layout, então não é necessário configurar aqui
     }
 
     override fun getItemCount() = ingredients.size
 }
+

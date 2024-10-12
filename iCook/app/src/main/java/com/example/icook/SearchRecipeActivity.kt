@@ -27,7 +27,8 @@ class SearchRecipeActivity : AppCompatActivity() {
         searchField = findViewById(R.id.searchField)
 
         // Carregue suas receitas de algum lugar (por exemplo, de um banco de dados ou lista estática)
-        allRecipes = loadRecipes() // Supondo que você tenha uma função que carrega todas as receitas
+        allRecipes =
+            loadRecipes() // Supondo que você tenha uma função que carrega todas as receitas
         filteredRecipes = allRecipes.toList()
 
         adapter = RecipeAdapter(this, filteredRecipes)
@@ -42,6 +43,7 @@ class SearchRecipeActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 filterRecipes(s.toString())
             }
+
             override fun afterTextChanged(s: Editable?) {}
         })
     }
