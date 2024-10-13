@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         val recipe1 = Recipe(
             id = 1,
             name = "Bolo de Chocolate",
-            prepTime = "40 min",
+            prepTime = "40",
             rating = 5,
             ingredients = "2 xícaras de farinha de trigo\n" +
                     "1 xícara de chocolate em pó\n" +
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         val recipe2 = Recipe(
             id = 2,
             name = "Bolo de Cenoura",
-            prepTime = "50 min",
+            prepTime = "50",
             rating = 4,
             ingredients = "2 xícaras de cenoura ralada\n" +
                     "1 xícara de óleo\n" +
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         val recipe3 = Recipe(
             id = 3,
             name = "Bolo de Laranja",
-            prepTime = "35 min",
+            prepTime = "35",
             rating = 4,
             ingredients = "2 xícaras de farinha de trigo\n" +
                     "1 xícara de açúcar\n" +
