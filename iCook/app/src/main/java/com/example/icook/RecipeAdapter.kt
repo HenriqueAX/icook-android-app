@@ -36,13 +36,8 @@ class RecipeAdapter(private val context: Context, private val recipes: List<Reci
         prepTime.text = recipe.prepTime
         rating.text = "${recipe.rating}/5" // Exibe a avaliação no formato correto
 
-        // Associe a imagem baseada na receita
-        when (recipe.name) {
-            "Bolo de Chocolate" -> recipeImage.setImageResource(R.drawable.bolo_chocolate)
-            "Bolo de Cenoura" -> recipeImage.setImageResource(R.drawable.bolo_cenoura)
-            "Bolo de Laranja" -> recipeImage.setImageResource(R.drawable.bolo_laranja)
-            else -> recipeImage.setImageResource(R.drawable.recipe_placeholder)
-        }
+        // Associe a imagem baseada na receita usando o id da imagem
+        recipeImage.setImageResource(recipe.imageResId)
 
         // Navegação para detalhes da receita
         view.setOnClickListener {
