@@ -23,7 +23,7 @@ class RecipeDetailActivity : AppCompatActivity() {
         val recipe = intent.getSerializableExtra("RECIPE") as Recipe
 
         recipeName.text = recipe.name
-        prepTime.text = recipe.prepTime
+        prepTime.text = "${recipe.prepTime} min"
         rating.text = "${recipe.rating}/5" // Definindo a avaliação
         instructions.text = recipe.instructions
 

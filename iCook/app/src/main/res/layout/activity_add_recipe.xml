@@ -19,7 +19,7 @@
             android:id="@+id/etPrepTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Tempo de Preparo" />
+            android:hint="Tempo de Preparo (em minutos)" />
 
         <EditText
             android:id="@+id/etRating"
@@ -38,6 +38,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Instruções" />
+
+        <!-- Campo para adicionar a imagem da receita -->
+        <ImageView
+            android:id="@+id/imgRecipe"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/recipe_placeholder"
+            android:contentDescription="Imagem da Receita" />
 
         <Button
             android:id="@+id/btnAdd"
