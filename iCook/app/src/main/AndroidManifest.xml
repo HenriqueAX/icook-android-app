@@ -10,7 +10,7 @@
             <activity android:name=".SearchRecipeActivity"></activity>
             <activity android:name=".RecipeResultActivity"></activity>
             <activity android:name=".RecipeDetailActivity"></activity>
-            <activity android:name=".IngredientAdapter"></activity>
+            <activity android:name=".AddRecipeActivity"></activity>
             <activity android:name=".MainActivity"
                 android:exported="true">
                 <intent-filter>

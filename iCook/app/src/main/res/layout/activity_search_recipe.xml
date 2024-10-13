@@ -23,4 +23,33 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <ImageButton
+            android:id="@+id/btnSearchRecipes"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/ic_search"
+            android:contentDescription="Buscar Receitas"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center"
+            android:layout_height="40dp"
+            android:layout_width="40dp" />
+
+        <ImageButton
+            android:id="@+id/btnAddRecipe"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/ic_add"
+            android:contentDescription="Adicionar Receita"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center"
+            android:layout_height="40dp"
+            android:layout_width="40dp" />
+    </LinearLayout>
 </LinearLayout>
