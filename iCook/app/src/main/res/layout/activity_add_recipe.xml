@@ -43,11 +43,13 @@
         <ImageView
             android:id="@+id/imgRecipe"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
             android:layout_marginTop="8dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/recipe_placeholder"
-            android:contentDescription="Imagem da Receita" />
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_add_image"
+            android:contentDescription="Adicionar imagem da Receita"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:layout_height="100dp" />
 
         <Button
             android:id="@+id/btnAdd"
