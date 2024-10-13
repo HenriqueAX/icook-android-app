@@ -34,7 +34,7 @@ class RecipeAdapter(private val context: Context, private val recipes: List<Reci
         val recipe = recipes[position]
         recipeName.text = recipe.name
         prepTime.text = "${recipe.prepTime} min"
-        rating.text = "${recipe.rating}/5" // Exibe a avaliação no formato correto
+        rating.text = "${recipe.rating}/5"
 
         // Associe a imagem baseada na receita usando o id da imagem
         recipeImage.setImageResource(recipe.imageResId)

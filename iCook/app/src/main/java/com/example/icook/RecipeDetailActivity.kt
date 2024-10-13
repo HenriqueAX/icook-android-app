@@ -23,17 +23,12 @@ class RecipeDetailActivity : AppCompatActivity() {
         val recipe = intent.getSerializableExtra("RECIPE") as Recipe
 
         recipeName.text = recipe.name
-        prepTime.text = "${recipe.prepTime} min"
-        rating.text = "${recipe.rating}/5" // Definindo a avaliação
+        prepTime.text = "${recipe.prepTime} min" // Exibe "min" na tela, mas não salva no banco
+        rating.text = "${recipe.rating}/5"
         instructions.text = recipe.instructions
 
         // Defina a imagem da receita
-        when (recipe.name) {
-            "Bolo de Chocolate" -> recipeImage.setImageResource(R.drawable.bolo_chocolate)
-            "Bolo de Cenoura" -> recipeImage.setImageResource(R.drawable.bolo_cenoura)
-            "Bolo de Laranja" -> recipeImage.setImageResource(R.drawable.bolo_laranja)
-            else -> recipeImage.setImageResource(R.drawable.recipe_placeholder)
-        }
+        recipeImage.setImageResource(recipe.imageResId)
 
         ingredientsRecyclerView.layoutManager = LinearLayoutManager(this)
         ingredientsRecyclerView.adapter = IngredientAdapter(recipe.ingredients.split("\n"))

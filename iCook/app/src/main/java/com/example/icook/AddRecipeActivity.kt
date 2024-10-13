@@ -56,7 +56,7 @@ class AddRecipeActivity : AppCompatActivity() {
 
     private fun addRecipe() {
         val name = etRecipeName.text.toString()
-        val prepTime = etPrepTime.text.toString().toIntOrNull() ?: 0 // Obtém o valor como inteiro
+        val prepTime = etPrepTime.text.toString().toIntOrNull() ?: 0 // Agora obtém o valor como número simples
         val rating = etRating.text.toString().toIntOrNull() ?: 0
         val ingredients = etIngredients.text.toString()
         val instructions = etInstructions.text.toString()
@@ -65,7 +65,7 @@ class AddRecipeActivity : AppCompatActivity() {
             val recipe = Recipe(
                 id = 0,
                 name = name,
-                prepTime = "$prepTime min", // Formata o tempo de preparo
+                prepTime = prepTime,
                 rating = rating,
                 ingredients = ingredients,
                 instructions = instructions,

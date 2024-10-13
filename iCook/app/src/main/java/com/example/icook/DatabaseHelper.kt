@@ -62,7 +62,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             do {
                 val id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID))
                 val name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME))
-                val prepTime = cursor.getString(cursor.getColumnIndex(COLUMN_PREP_TIME))
+                val prepTime = cursor.getInt(cursor.getColumnIndex(COLUMN_PREP_TIME))
                 val rating = cursor.getInt(cursor.getColumnIndex(COLUMN_RATING))
                 val ingredients = cursor.getString(cursor.getColumnIndex(COLUMN_INGREDIENTS))
                 val instructions = cursor.getString(cursor.getColumnIndex(COLUMN_INSTRUCTIONS))

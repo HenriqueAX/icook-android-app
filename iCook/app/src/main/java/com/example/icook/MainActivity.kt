@@ -20,10 +20,8 @@ class MainActivity : AppCompatActivity() {
         etPassword = findViewById(R.id.etPassword)
         btnLogin = findViewById(R.id.btnLogin)
 
-        // Inicializa o DatabaseHelper
         dbHelper = DatabaseHelper(this)
 
-        // Adiciona receitas ao banco de dados se estiver vazio
         if (dbHelper.getAllRecipes().isEmpty()) {
             addDefaultRecipes()
         }
@@ -38,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         val recipe1 = Recipe(
             id = 1,
             name = "Bolo de Chocolate",
-            prepTime = "40",
+            prepTime = 40, // Agora armazena apenas o número
             rating = 5,
             ingredients = "2 xícaras de farinha de trigo\n" +
                     "1 xícara de chocolate em pó\n" +
@@ -48,13 +46,13 @@ class MainActivity : AppCompatActivity() {
                     "3 ovos\n" +
                     "1 colher de sopa de fermento em pó",
             instructions = "Primeiro, preaqueça o forno a 180°C. Em uma tigela, misture todos os ingredientes secos. Adicione os ovos, o leite e o óleo, e misture até ficar homogêneo. Por último, adicione o fermento e misture levemente. Despeje a massa em uma forma untada e leve ao forno por cerca de 30 a 40 minutos.",
-            imageResId = R.drawable.bolo_chocolate // Adicione a imagem correspondente
+            imageResId = R.drawable.bolo_chocolate
         )
 
         val recipe2 = Recipe(
             id = 2,
             name = "Bolo de Cenoura",
-            prepTime = "50",
+            prepTime = 50, // Agora armazena apenas o número
             rating = 4,
             ingredients = "2 xícaras de cenoura ralada\n" +
                     "1 xícara de óleo\n" +
@@ -63,13 +61,13 @@ class MainActivity : AppCompatActivity() {
                     "2 xícaras de farinha de trigo\n" +
                     "1 colher de sopa de fermento em pó",
             instructions = "Primeiro, preaqueça o forno a 180°C. No liquidificador, bata a cenoura, o óleo, os ovos e o açúcar. Em uma tigela, misture a farinha de trigo e o fermento. Junte a mistura do liquidificador com os secos e mexa até ficar homogêneo. Despeje em uma forma untada e leve ao forno por cerca de 40 a 50 minutos.",
-            imageResId = R.drawable.bolo_cenoura // Adicione a imagem correspondente
+            imageResId = R.drawable.bolo_cenoura
         )
 
         val recipe3 = Recipe(
             id = 3,
             name = "Bolo de Laranja",
-            prepTime = "35",
+            prepTime = 35, // Agora armazena apenas o número
             rating = 4,
             ingredients = "2 xícaras de farinha de trigo\n" +
                     "1 xícara de açúcar\n" +
@@ -79,13 +77,11 @@ class MainActivity : AppCompatActivity() {
                     "1 colher de sopa de fermento em pó\n" +
                     "Raspas de 1 laranja",
             instructions = "Primeiro, preaqueça o forno a 180°C. Em uma tigela, misture todos os ingredientes até ficar homogêneo. Despeje a massa em uma forma untada e leve ao forno por cerca de 30 a 35 minutos.",
-            imageResId = R.drawable.bolo_laranja // Adicione a imagem correspondente
+            imageResId = R.drawable.bolo_laranja
         )
 
-        // Adiciona as receitas ao banco de dados
         dbHelper.addRecipe(recipe1)
         dbHelper.addRecipe(recipe2)
         dbHelper.addRecipe(recipe3)
     }
-
 }
