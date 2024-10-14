@@ -68,7 +68,3 @@ As credenciais padrão para acessar o aplicativo são:
 - **Senha:** `1234`
 
 Caso as credenciais estejam incorretas, uma mensagem de erro será exibida.
-
-## Licença
-
-Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
