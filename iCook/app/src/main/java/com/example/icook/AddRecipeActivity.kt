@@ -1,5 +1,6 @@
 package com.example.icook
 
+import android.app.Activity
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
@@ -74,6 +75,9 @@ class AddRecipeActivity : AppCompatActivity() {
             )
             dbHelper.addRecipe(recipe)
             Toast.makeText(this, "Receita adicionada com sucesso!", Toast.LENGTH_SHORT).show()
+
+            // Retorna para a tela anterior e indica que houve uma alteração
+            setResult(Activity.RESULT_OK)
             finish()
         } else {
             Toast.makeText(

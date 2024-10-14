@@ -51,7 +51,16 @@ class SearchRecipeActivity : AppCompatActivity() {
         val btnAddRecipe = findViewById<ImageButton>(R.id.btnAddRecipe)
         btnAddRecipe.setOnClickListener {
             val intent = Intent(this, AddRecipeActivity::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, 100) // Start activity with result
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            // Atualiza as receitas quando uma nova for adicionada
+            allRecipes = dbHelper.getAllRecipes()
+            filterRecipes(searchField.text.toString())
         }
     }
 
