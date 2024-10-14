@@ -1,8 +1,6 @@
 package com.example.icook
 
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -31,17 +29,23 @@ class RecipeDetailActivity : AppCompatActivity() {
         rating.text = "${recipe.rating}/5"
         instructions.text = recipe.instructions
 
-        // Exibe a imagem da receita baseada na URI armazenada
-        if (recipe.imageUri != null) {
-            val imageFile = File(recipe.imageUri)
-            if (imageFile.exists()) {
-                val imageUri = FileProvider.getUriForFile(this, "${packageName}.provider", imageFile)
-                recipeImage.setImageURI(imageUri)
-            } else {
+        // Verifica se a receita tem imageResId ou imageUri para exibir a imagem
+        when {
+            recipe.imageResId != null -> {
+                recipeImage.setImageResource(recipe.imageResId)
+            }
+            recipe.imageUri != null -> {
+                val imageFile = File(recipe.imageUri)
+                if (imageFile.exists()) {
+                    val imageUri = FileProvider.getUriForFile(this, "${packageName}.provider", imageFile)
+                    recipeImage.setImageURI(imageUri)
+                } else {
+                    recipeImage.setImageResource(R.drawable.recipe_placeholder)
+                }
+            }
+            else -> {
                 recipeImage.setImageResource(R.drawable.recipe_placeholder)
             }
-        } else {
-            recipeImage.setImageResource(R.drawable.recipe_placeholder)
         }
 
         ingredientsRecyclerView.layoutManager = LinearLayoutManager(this)

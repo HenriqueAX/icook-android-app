@@ -9,5 +9,6 @@ data class Recipe(
     val rating: Int,
     val ingredients: String,
     val instructions: String,
-    val imageUri: String? = null // Modificado para armazenar a URI da imagem
+    val imageResId: Int? = null, // Agora é opcional
+    val imageUri: String? = null // Para imagens adicionadas localmente
 ) : Serializable

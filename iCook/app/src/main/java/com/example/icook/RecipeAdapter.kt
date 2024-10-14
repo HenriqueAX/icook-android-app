@@ -2,7 +2,6 @@ package com.example.icook
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,8 +32,10 @@ class RecipeAdapter(private val context: Context, private val recipes: List<Reci
         prepTime.text = "${recipe.prepTime} min"
         rating.text = "${recipe.rating}/5"
 
-        // Verifique se a URI da imagem está presente e carregue do armazenamento interno
-        if (recipe.imageUri != null) {
+        // Verifica se a receita tem imageResId para carregar a imagem dos recursos
+        if (recipe.imageResId != null) {
+            recipeImage.setImageResource(recipe.imageResId)
+        } else if (recipe.imageUri != null) {
             val imageFile = File(recipe.imageUri)
             if (imageFile.exists()) {
                 val imageUri = FileProvider.getUriForFile(context, "${context.packageName}.provider", imageFile)

@@ -18,25 +18,28 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         private const val COLUMN_RATING = "rating"
         private const val COLUMN_INGREDIENTS = "ingredients"
         private const val COLUMN_INSTRUCTIONS = "instructions"
-        private const val COLUMN_IMAGE_URI = "image_uri" // Modificado para armazenar a URI da imagem
+        private const val COLUMN_IMAGE_RES_ID = "image_res_id" // Coluna para imageResId
+        private const val COLUMN_IMAGE_URI = "image_uri" // Coluna para imageUri
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
         val createTable = ("CREATE TABLE $TABLE_RECIPES ("
                 + "$COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "$COLUMN_NAME TEXT,"
-                + "$COLUMN_PREP_TIME TEXT,"
+                + "$COLUMN_PREP_TIME INTEGER,"
                 + "$COLUMN_RATING INTEGER,"
                 + "$COLUMN_INGREDIENTS TEXT,"
                 + "$COLUMN_INSTRUCTIONS TEXT,"
-                + "$COLUMN_IMAGE_URI TEXT" // Modificado para armazenar a URI da imagem
+                + "$COLUMN_IMAGE_RES_ID INTEGER,"
+                + "$COLUMN_IMAGE_URI TEXT" // Nova coluna para imageUri
                 + ")")
         db?.execSQL(createTable)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        db?.execSQL("DROP TABLE IF EXISTS $TABLE_RECIPES")
-        onCreate(db)
+        if (oldVersion < 2) {
+            db?.execSQL("ALTER TABLE $TABLE_RECIPES ADD COLUMN $COLUMN_IMAGE_URI TEXT")
+        }
     }
 
     fun addRecipe(recipe: Recipe) {
@@ -47,7 +50,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             put(COLUMN_RATING, recipe.rating)
             put(COLUMN_INGREDIENTS, recipe.ingredients)
             put(COLUMN_INSTRUCTIONS, recipe.instructions)
-            put(COLUMN_IMAGE_URI, recipe.imageUri) // Armazena a URI da imagem
+            put(COLUMN_IMAGE_RES_ID, recipe.imageResId)
+            put(COLUMN_IMAGE_URI, recipe.imageUri)
         }
         db.insert(TABLE_RECIPES, null, values)
         db.close()
@@ -66,9 +70,11 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 val rating = cursor.getInt(cursor.getColumnIndex(COLUMN_RATING))
                 val ingredients = cursor.getString(cursor.getColumnIndex(COLUMN_INGREDIENTS))
                 val instructions = cursor.getString(cursor.getColumnIndex(COLUMN_INSTRUCTIONS))
-                val imageUri = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI)) // Recupera a URI da imagem
+                val imageResId = cursor.getInt(cursor.getColumnIndex(COLUMN_IMAGE_RES_ID))
+                val imageUri = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI))
 
-                val recipe = Recipe(id, name, prepTime, rating, ingredients, instructions, imageUri)
+                val recipe = Recipe(id, name, prepTime, rating, ingredients, instructions,
+                    if (imageResId == 0) null else imageResId, imageUri)
                 recipeList.add(recipe)
             } while (cursor.moveToNext())
         }
