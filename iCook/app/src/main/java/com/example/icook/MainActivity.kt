@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
@@ -27,8 +28,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnLogin.setOnClickListener {
-            val intent = Intent(this, SearchRecipeActivity::class.java)
-            startActivity(intent)
+            val username = etUsername.text.toString()
+            val password = etPassword.text.toString()
+
+            if (username == "admin" && password == "1234") {
+                val intent = Intent(this, SearchRecipeActivity::class.java)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "Usuário e senha incorretos", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
