@@ -1,21 +1,18 @@
 package com.example.icook
 
 import android.app.Activity
-import android.content.ContentResolver
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.widget.Button
-import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.io.InputStream
 
 class AddRecipeActivity : AppCompatActivity() {
 
@@ -26,6 +23,7 @@ class AddRecipeActivity : AppCompatActivity() {
     private lateinit var etInstructions: EditText
     private lateinit var btnAdd: Button
     private lateinit var imgRecipe: ImageView
+    private lateinit var btnSearchRecipes: ImageButton // Adicionado para o botão de busca
     private var selectedImageUri: Uri? = null
     private lateinit var dbHelper: DatabaseHelper
 
@@ -40,6 +38,7 @@ class AddRecipeActivity : AppCompatActivity() {
         etInstructions = findViewById(R.id.etInstructions)
         btnAdd = findViewById(R.id.btnAdd)
         imgRecipe = findViewById(R.id.imgRecipe)
+        btnSearchRecipes = findViewById(R.id.btnSearchRecipes) // Inicialização do botão de busca
 
         dbHelper = DatabaseHelper(this)
 
@@ -52,6 +51,12 @@ class AddRecipeActivity : AppCompatActivity() {
 
         btnAdd.setOnClickListener {
             addRecipe()
+        }
+
+        // Adicionando funcionalidade para o botão de busca
+        btnSearchRecipes.setOnClickListener {
+            val intent = Intent(this, SearchRecipeActivity::class.java)
+            startActivity(intent)
         }
     }
 
