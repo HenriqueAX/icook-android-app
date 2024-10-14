@@ -1,24 +1,69 @@
-    <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        package="com.example.icook">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <application
-            android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/app_name"
-            android:supportsRtl="true"
-            android:theme="@style/Theme.ICook">
-            <activity android:name=".SearchRecipeActivity"></activity>
-            <activity android:name=".RecipeResultActivity"></activity>
-            <activity android:name=".RecipeDetailActivity"></activity>
-            <activity android:name=".AddRecipeActivity"></activity>
-            <activity android:name=".MainActivity"
-                android:exported="true">
-                <intent-filter>
-                    <action android:name="android.intent.action.MAIN" />
+    <application
 
-                    <category android:name="android.intent.category.LAUNCHER" />
-                </intent-filter>
-            </activity>
-        </application>
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.ICook">
 
-    </manifest>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <!-- MainActivity -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- AddRecipeActivity -->
+        <activity
+            android:name=".AddRecipeActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
+
+        <!-- RecipeDetailActivity -->
+        <activity
+            android:name=".RecipeDetailActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
+
+        <!-- SearchRecipeActivity (Adicionada ao Manifest) -->
+        <activity
+            android:name=".SearchRecipeActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".RecipeResultActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>

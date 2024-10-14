@@ -1,11 +1,15 @@
 package com.example.icook
 
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.core.content.FileProvider
+import java.io.File
 
 class RecipeDetailActivity : AppCompatActivity() {
 
@@ -23,12 +27,22 @@ class RecipeDetailActivity : AppCompatActivity() {
         val recipe = intent.getSerializableExtra("RECIPE") as Recipe
 
         recipeName.text = recipe.name
-        prepTime.text = "${recipe.prepTime} min" // Exibe "min" na tela, mas não salva no banco
+        prepTime.text = "${recipe.prepTime} min"
         rating.text = "${recipe.rating}/5"
         instructions.text = recipe.instructions
 
-        // Defina a imagem da receita
-        recipeImage.setImageResource(recipe.imageResId)
+        // Exibe a imagem da receita baseada na URI armazenada
+        if (recipe.imageUri != null) {
+            val imageFile = File(recipe.imageUri)
+            if (imageFile.exists()) {
+                val imageUri = FileProvider.getUriForFile(this, "${packageName}.provider", imageFile)
+                recipeImage.setImageURI(imageUri)
+            } else {
+                recipeImage.setImageResource(R.drawable.recipe_placeholder)
+            }
+        } else {
+            recipeImage.setImageResource(R.drawable.recipe_placeholder)
+        }
 
         ingredientsRecyclerView.layoutManager = LinearLayoutManager(this)
         ingredientsRecyclerView.adapter = IngredientAdapter(recipe.ingredients.split("\n"))

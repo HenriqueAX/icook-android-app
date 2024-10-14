@@ -3,11 +3,11 @@ package com.example.icook
 import java.io.Serializable
 
 data class Recipe(
-    val id: Int,                // Adiciona o ID
+    val id: Int,
     val name: String,
-    val prepTime: Int,       // Agora armazena apenas o número
+    val prepTime: Int,
     val rating: Int,
-    val ingredients: String,    // Exemplo: "Farinha, Açúcar, Ovos"
+    val ingredients: String,
     val instructions: String,
-    val imageResId: Int        // Adiciona o recurso de imagem
+    val imageUri: String? = null // Modificado para armazenar a URI da imagem
 ) : Serializable

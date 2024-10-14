@@ -10,7 +10,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     companion object {
         private const val DATABASE_NAME = "icook.db"
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 2
         private const val TABLE_RECIPES = "recipes"
         private const val COLUMN_ID = "id"
         private const val COLUMN_NAME = "name"
@@ -18,7 +18,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         private const val COLUMN_RATING = "rating"
         private const val COLUMN_INGREDIENTS = "ingredients"
         private const val COLUMN_INSTRUCTIONS = "instructions"
-        private const val COLUMN_IMAGE_RES_ID = "image_res_id" // Nova coluna para a imagem
+        private const val COLUMN_IMAGE_URI = "image_uri" // Modificado para armazenar a URI da imagem
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -29,7 +29,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 + "$COLUMN_RATING INTEGER,"
                 + "$COLUMN_INGREDIENTS TEXT,"
                 + "$COLUMN_INSTRUCTIONS TEXT,"
-                + "$COLUMN_IMAGE_RES_ID INTEGER" // Nova coluna para a imagem
+                + "$COLUMN_IMAGE_URI TEXT" // Modificado para armazenar a URI da imagem
                 + ")")
         db?.execSQL(createTable)
     }
@@ -47,7 +47,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             put(COLUMN_RATING, recipe.rating)
             put(COLUMN_INGREDIENTS, recipe.ingredients)
             put(COLUMN_INSTRUCTIONS, recipe.instructions)
-            put(COLUMN_IMAGE_RES_ID, recipe.imageResId) // Armazena o id da imagem
+            put(COLUMN_IMAGE_URI, recipe.imageUri) // Armazena a URI da imagem
         }
         db.insert(TABLE_RECIPES, null, values)
         db.close()
@@ -66,9 +66,9 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 val rating = cursor.getInt(cursor.getColumnIndex(COLUMN_RATING))
                 val ingredients = cursor.getString(cursor.getColumnIndex(COLUMN_INGREDIENTS))
                 val instructions = cursor.getString(cursor.getColumnIndex(COLUMN_INSTRUCTIONS))
-                val imageResId = cursor.getInt(cursor.getColumnIndex(COLUMN_IMAGE_RES_ID)) // Recupera o id da imagem
+                val imageUri = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI)) // Recupera a URI da imagem
 
-                val recipe = Recipe(id, name, prepTime, rating, ingredients, instructions, imageResId)
+                val recipe = Recipe(id, name, prepTime, rating, ingredients, instructions, imageUri)
                 recipeList.add(recipe)
             } while (cursor.moveToNext())
         }
