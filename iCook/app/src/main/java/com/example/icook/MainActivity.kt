@@ -7,52 +7,48 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
-// Activity principal de login
+// Activity responsável pelo login do usuário
 class MainActivity : AppCompatActivity() {
 
-    // Declaração dos componentes da interface gráfica
-    private lateinit var etUsername: EditText // Campo de texto para o nome de usuário
-    private lateinit var etPassword: EditText // Campo de texto para a senha
-    private lateinit var btnLogin: Button // Botão de login
-    private lateinit var dbHelper: DatabaseHelper // Instância do helper para interagir com o banco de dados
+    private lateinit var etUsername: EditText         // Campo para nome de usuário
+    private lateinit var etPassword: EditText         // Campo para senha
+    private lateinit var btnLogin: Button             // Botão de login
+    private lateinit var dbHelper: DatabaseHelper     // Helper para interagir com o banco de dados
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Inicializa os campos de entrada e o botão de login com os IDs do layout
+        // Inicialização dos componentes da interface com base no layout XML
         etUsername = findViewById(R.id.etUsername)
         etPassword = findViewById(R.id.etPassword)
         btnLogin = findViewById(R.id.btnLogin)
 
-        // Inicializa o banco de dados para poder interagir com ele
+        // Inicializa o banco de dados
         dbHelper = DatabaseHelper(this)
 
-        // Verifica se o banco de dados está vazio e, se necessário, adiciona receitas padrão
+        // Adiciona receitas padrão se o banco de dados estiver vazio
         if (dbHelper.getAllRecipes().isEmpty()) {
-            addDefaultRecipes() // Função que adiciona receitas de exemplo ao banco
+            addDefaultRecipes() // Função que adiciona receitas iniciais ao banco
         }
 
         // Configura o evento de clique no botão de login
         btnLogin.setOnClickListener {
-            val username = etUsername.text.toString() // Obtém o nome de usuário digitado
-            val password = etPassword.text.toString() // Obtém a senha digitada
+            val username = etUsername.text.toString()
+            val password = etPassword.text.toString()
 
-            // Valida se as credenciais correspondem ao usuário e senha padrões
+            // Valida as credenciais de login
             if (username == "admin" && password == "1234") {
-                // Se o login for bem-sucedido, navega para a tela de busca de receitas
                 val intent = Intent(this, SearchRecipeActivity::class.java)
-                startActivity(intent)
+                startActivity(intent) // Navega para a tela de busca de receitas
             } else {
-                // Se as credenciais forem inválidas, exibe uma mensagem de erro
                 Toast.makeText(this, "Usuário e senha incorretos", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    // Função para adicionar receitas padrão ao banco de dados
+    // Adiciona receitas padrão ao banco de dados
     private fun addDefaultRecipes() {
-        // Criação de uma receita de exemplo: Bolo de Chocolate
         val recipe1 = Recipe(
             id = 1,
             name = "Bolo de Chocolate",
@@ -65,11 +61,10 @@ class MainActivity : AppCompatActivity() {
                     "1/2 xícara de óleo\n" +
                     "3 ovos\n" +
                     "1 colher de sopa de fermento em pó",
-            instructions = "Primeiro, preaqueça o forno a 180°C. Em uma tigela, misture todos os ingredientes secos. Adicione os ovos, o leite e o óleo, e misture até ficar homogêneo. Por último, adicione o fermento e misture levemente. Despeje a massa em uma forma untada e leve ao forno por cerca de 30 a 40 minutos.",
+            instructions = "Primeiro, preaqueça o forno a 180°C. Em uma tigela, misture todos os ingredientes secos...",
             imageResId = R.drawable.bolo_chocolate
         )
 
-        // Criação de outra receita de exemplo: Bolo de Cenoura
         val recipe2 = Recipe(
             id = 2,
             name = "Bolo de Cenoura",
@@ -81,11 +76,10 @@ class MainActivity : AppCompatActivity() {
                     "3 ovos\n" +
                     "2 xícaras de farinha de trigo\n" +
                     "1 colher de sopa de fermento em pó",
-            instructions = "Primeiro, preaqueça o forno a 180°C. No liquidificador, bata a cenoura, o óleo, os ovos e o açúcar. Em uma tigela, misture a farinha de trigo e o fermento. Junte a mistura do liquidificador com os secos e mexa até ficar homogêneo. Despeje em uma forma untada e leve ao forno por cerca de 40 a 50 minutos.",
+            instructions = "Primeiro, preaqueça o forno a 180°C. No liquidificador, bata a cenoura, o óleo...",
             imageResId = R.drawable.bolo_cenoura
         )
 
-        // Criação de uma receita adicional: Bolo de Laranja
         val recipe3 = Recipe(
             id = 3,
             name = "Bolo de Laranja",
@@ -98,11 +92,11 @@ class MainActivity : AppCompatActivity() {
                     "3 ovos\n" +
                     "1 colher de sopa de fermento em pó\n" +
                     "Raspas de 1 laranja",
-            instructions = "Primeiro, preaqueça o forno a 180°C. Em uma tigela, misture todos os ingredientes até ficar homogêneo. Despeje a massa em uma forma untada e leve ao forno por cerca de 30 a 35 minutos.",
+            instructions = "Primeiro, preaqueça o forno a 180°C. Em uma tigela, misture todos os ingredientes...",
             imageResId = R.drawable.bolo_laranja
         )
 
-        // Adiciona as receitas criadas no banco de dados
+        // Adiciona as receitas ao banco de dados
         dbHelper.addRecipe(recipe1)
         dbHelper.addRecipe(recipe2)
         dbHelper.addRecipe(recipe3)

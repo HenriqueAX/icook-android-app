@@ -4,39 +4,30 @@ import android.os.Bundle
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 
-// Activity responsável por exibir os resultados da busca de receitas
+// Activity que exibe os resultados da busca de receitas
 class RecipeResultActivity : AppCompatActivity() {
 
-    // Declaração dos componentes da interface gráfica
-    private lateinit var recipeListView: ListView // Lista de receitas exibidas
-    private lateinit var adapter: RecipeAdapter // Adaptador para a lista de receitas
-    private lateinit var dbHelper: DatabaseHelper // Helper para interagir com o banco de dados
+    private lateinit var recipeListView: ListView // Lista de receitas
+    private lateinit var adapter: RecipeAdapter // Adaptador para a lista
+    private lateinit var dbHelper: DatabaseHelper // Helper para acessar o banco de dados
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_result)
 
-        // Inicializa o componente ListView da interface
-        recipeListView = findViewById(R.id.recipeListView)
+        recipeListView = findViewById(R.id.recipeListView) // Inicializa a lista de receitas
+        val query = intent.getStringExtra("QUERY") ?: "" // Obtém o termo de busca
 
-        // Obtém o termo de pesquisa da Intent, caso exista
-        val query = intent.getStringExtra("QUERY") ?: "" // Se não houver consulta, usa uma string vazia
+        dbHelper = DatabaseHelper(this) // Inicializa o helper para o banco de dados
+        val allRecipes = dbHelper.getAllRecipes() // Obtém todas as receitas do banco
 
-        // Inicializa o DatabaseHelper para acessar o banco de dados
-        dbHelper = DatabaseHelper(this)
-
-        // Obtém todas as receitas do banco de dados
-        val allRecipes = dbHelper.getAllRecipes()
-
-        // Filtra as receitas que contém o texto da consulta no nome (ignora maiúsculas e minúsculas)
+        // Filtra as receitas com base na consulta
         val filteredRecipes = allRecipes.filter { recipe ->
             recipe.name.contains(query, ignoreCase = true)
         }
 
-        // Inicializa o adaptador com a lista de receitas filtradas
+        // Configura o adaptador com as receitas filtradas
         adapter = RecipeAdapter(this, filteredRecipes)
-
-        // Define o adaptador para o ListView
-        recipeListView.adapter = adapter
+        recipeListView.adapter = adapter // Define o adaptador para o ListView
     }
 }

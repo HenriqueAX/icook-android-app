@@ -11,13 +11,13 @@ import android.widget.TextView
 import androidx.core.content.FileProvider
 import java.io.File
 
-// Adaptador para exibir uma lista de receitas em um ListView
+// Adaptador que conecta a lista de receitas ao ListView
 class RecipeAdapter(private val context: Context, private val recipes: List<Recipe>) : BaseAdapter() {
 
-    // Retorna o número total de itens (receitas) na lista
+    // Retorna o número total de receitas
     override fun getCount(): Int = recipes.size
 
-    // Retorna o item na posição especificada
+    // Retorna a receita na posição especificada
     override fun getItem(position: Int): Any = recipes[position]
 
     // Retorna o ID do item na posição especificada
@@ -25,51 +25,45 @@ class RecipeAdapter(private val context: Context, private val recipes: List<Reci
 
     // Cria e configura a visualização de cada item no ListView
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        // Usa o convertView (se disponível) ou infla uma nova view a partir do layout recipe_item
+        // Infla ou reutiliza a view do item
         val view: View = convertView ?: LayoutInflater.from(context).inflate(R.layout.recipe_item, parent, false)
 
-        // Referências para os componentes visuais dentro do item (TextViews e ImageView)
+        // Obtém os componentes da interface (nome, tempo, avaliação e imagem)
         val recipeName = view.findViewById<TextView>(R.id.recipeName)
         val prepTime = view.findViewById<TextView>(R.id.prepTime)
         val rating = view.findViewById<TextView>(R.id.recipeRating)
         val recipeImage = view.findViewById<ImageView>(R.id.recipeImage)
 
-        // Obtém a receita na posição especificada
+        // Obtém a receita da lista
         val recipe = recipes[position]
 
-        // Define o nome, tempo de preparo e avaliação da receita nos TextViews correspondentes
+        // Define os dados da receita nos componentes visuais
         recipeName.text = recipe.name
         prepTime.text = "${recipe.prepTime} min"
         rating.text = "${recipe.rating}/5"
 
-        // Verifica se a receita tem uma imagem associada (imageResId ou imageUri)
+        // Configura a imagem da receita, se disponível
         if (recipe.imageResId != null) {
-            // Se a imagem for um recurso do aplicativo, define a imagem no ImageView
-            recipeImage.setImageResource(recipe.imageResId)
+            recipeImage.setImageResource(recipe.imageResId) // Imagem do recurso
         } else if (recipe.imageUri != null) {
-            // Se a imagem for fornecida pelo usuário, usa o URI para carregar a imagem
             val imageFile = File(recipe.imageUri)
             if (imageFile.exists()) {
-                // Cria um URI compatível para acessar o arquivo da imagem
                 val imageUri = FileProvider.getUriForFile(context, "${context.packageName}.provider", imageFile)
-                recipeImage.setImageURI(imageUri) // Define a imagem no ImageView
+                recipeImage.setImageURI(imageUri) // Imagem fornecida pelo usuário
             } else {
-                // Se o arquivo não existir, exibe uma imagem de placeholder
-                recipeImage.setImageResource(R.drawable.recipe_placeholder)
+                recipeImage.setImageResource(R.drawable.recipe_placeholder) // Imagem placeholder
             }
         } else {
-            // Se não houver imagem, exibe a imagem de placeholder
-            recipeImage.setImageResource(R.drawable.recipe_placeholder)
+            recipeImage.setImageResource(R.drawable.recipe_placeholder) // Imagem placeholder
         }
 
-        // Configura um clique no item para abrir a tela de detalhes da receita
+        // Configura o clique no item para abrir os detalhes da receita
         view.setOnClickListener {
-            // Cria uma Intent para abrir a RecipeDetailActivity e passar a receita selecionada
             val intent = Intent(context, RecipeDetailActivity::class.java)
-            intent.putExtra("RECIPE", recipe) // Passa a receita selecionada para a próxima tela
-            context.startActivity(intent) // Inicia a nova Activity
+            intent.putExtra("RECIPE", recipe) // Passa a receita para a próxima Activity
+            context.startActivity(intent) // Inicia a Activity de detalhes
         }
 
-        return view // Retorna a view configurada para exibição no ListView
+        return view // Retorna a view configurada para o ListView
     }
 }
