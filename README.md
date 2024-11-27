@@ -72,5 +72,3 @@ As credenciais padrão para acessar o aplicativo são:
 - **Senha:** `1234`
 
 Caso as credenciais estejam incorretas, uma mensagem de erro será exibida.
-
-Link do repositório: [https://github.com/HenriqueAX/icook-android-app.git](https://github.com/HenriqueAX/icook-android-app.git)
