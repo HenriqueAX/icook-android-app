@@ -32,13 +32,12 @@ class SearchRecipeActivity : AppCompatActivity() {
 
         // Inicializa o banco de dados e carrega receitas
         dbHelper = DatabaseHelper(this)
-        allRecipes = dbHelper.getAllRecipes()
-        filteredRecipes = allRecipes.toList()
+        loadRecipes()
 
         // Configura o RecyclerView
         setupRecyclerView()
 
-        // Configura o botão de busca (não é necessário para a digitação dinâmica)
+        // Configura o botão de busca
         btnSearch.setOnClickListener {
             searchRecipes()
         }
@@ -84,12 +83,25 @@ class SearchRecipeActivity : AppCompatActivity() {
         } else {
             allRecipes.filter { it.name.contains(query, ignoreCase = true) }
         }
-        // Atualiza os dados no adaptador
         recipeAdapter = RecipeAdapter(this, filteredRecipes) { recipe ->
             val intent = Intent(this, RecipeDetailActivity::class.java)
             intent.putExtra("RECIPE", recipe)
             startActivity(intent)
         }
         recipeRecyclerView.adapter = recipeAdapter
+    }
+
+    private fun loadRecipes() {
+        allRecipes = dbHelper.getAllRecipes()
+        filteredRecipes = allRecipes.toList()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            // Atualiza as receitas ao retornar da tela de adição
+            loadRecipes()
+            filterRecipes(searchField.text.toString())
+        }
     }
 }
