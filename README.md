@@ -59,7 +59,7 @@ O **iCook** é um aplicativo Android projetado para ajudar os usuários a descob
 
    - No Android Studio, vá em `File -> Open` e selecione o diretório do projeto clonado.
 
-3. **Build o projeto:**
+3. **Realize o build o projeto:**
 
    - Após abrir o projeto, sincronize as dependências e compile o app:
      - Clique em **`File -> Sync Project with Gradle Files`** para sincronizar as dependências do projeto.
@@ -75,7 +75,7 @@ O **iCook** é um aplicativo Android projetado para ajudar os usuários a descob
    - Conecte o dispositivo físico ou emulador criado.
    - Clique no botão **`Run`** (ícone de play verde) na barra de ferramentas ou vá em **`Run -> Run 'app'`** para instalar e rodar o aplicativo.
 
-## Como utilizar o aplicativo
+## Uso do aplicativo
 
 1. **Inicie o App:**
 
