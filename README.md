@@ -1,74 +1,101 @@
-
 # iCook App
 
-O iCook é um aplicativo de receitas desenvolvido para Android, onde os usuários podem buscar, adicionar e visualizar receitas. Este projeto foi desenvolvido em Kotlin e utiliza um banco de dados SQLite para armazenar receitas.
+O **iCook** é um aplicativo Android projetado para ajudar os usuários a descobrir, adicionar e gerenciar suas receitas favoritas de forma simples e intuitiva. Seja para explorar novos pratos ou compartilhar suas criações culinárias, o iCook oferece uma plataforma amigável para aprimorar sua experiência na cozinha.
 
 ## Funcionalidades
 
-- **Adicionar Receitas:** Os usuários podem adicionar novas receitas, incluindo nome, tempo de preparo, avaliação, ingredientes, modo de preparo e uma imagem.
-- **Buscar Receitas:** É possível buscar receitas com base no nome utilizando a barra de busca.
-- **Visualizar Receitas:** As receitas adicionadas podem ser visualizadas com seus detalhes, incluindo uma imagem, ingredientes e instruções.
-- **Login Simples:** O login é feito utilizando as credenciais fixas de administrador (`usuário: admin`, `senha: 1234`). Caso o login falhe, o usuário é informado de que o login é inválido.
+- **Autenticação de Usuário:**
 
-## Estrutura do Projeto
+  - **Login com Google:** Autenticação segura e fácil utilizando sua conta Google.
+  - **Firebase Authentication:** Suporte robusto para gerenciamento de sessões e estados de autenticação.
 
-O projeto está organizado da seguinte forma:
+- **Gerenciamento de Receitas:**
 
-- **MainActivity:** Tela de login do aplicativo.
-- **AddRecipeActivity:** Tela onde os usuários podem adicionar uma nova receita ao banco de dados.
-- **SearchRecipeActivity:** Tela que permite aos usuários buscar receitas existentes.
-- **RecipeResultActivity:** Exibe os resultados da busca.
-- **RecipeDetailActivity:** Exibe os detalhes de uma receita selecionada.
-- **DatabaseHelper:** Classe que gerencia o banco de dados SQLite para adicionar e recuperar receitas.
+  - **Buscar Receitas:** Pesquisa eficiente através de uma lista abrangente de receitas com filtragem em tempo real conforme você digita.
+  - **Adicionar Receitas:** Crie e adicione suas próprias receitas, incluindo detalhes como nome, tempo de preparação, avaliação, ingredientes, instruções e imagens.
+  - **Visualizar Detalhes da Receita:** Clique em qualquer receita para ver informações detalhadas, incluindo ingredientes e etapas de preparação.
+
+- **Interface do Usuário:**
+
+  - **Integração com RecyclerView:** Exibição eficiente de listas de receitas com rolagem suave e atualizações dinâmicas de conteúdo.
+  - **Design Responsivo:** Layouts otimizados para diferentes tamanhos e orientações de tela.
+
+- **Manipulação de Imagens:**
+
+  - **Upload de Imagens:** Selecione e faça upload de imagens da galeria do seu dispositivo para acompanhar suas receitas.
+  - **Imagens Placeholder:** Exibição de imagens padrão quando nenhuma imagem específica é fornecida para uma receita.
+
+- **Funcionalidade de Logout:**
+
+  - **Logout Seguro:** Saia facilmente da sua conta, garantindo que seus dados permaneçam protegidos.
+
+## Tecnologias e Recursos Utilizados
+
+- **Linguagem de Programação:** Kotlin
+- **Android SDK:** Para desenvolvimento do aplicativo.
+- **Firebase Authentication:** Para autenticação segura de usuários.
+- **Google Sign-In:** Simplifica o processo de login com contas Google.
+- **RecyclerView:** Para exibição eficiente e dinâmica de listas.
+- **SQLite:** Gerenciamento de banco de dados local para armazenamento de receitas.
+- **FileProvider:** Compartilhamento seguro de arquivos de imagem entre aplicativos.
 
 ## Requisitos
 
-- **Android Studio:** Para rodar o projeto no ambiente de desenvolvimento Android.
-- **Kotlin:** Linguagem de programação utilizada.
-- **SQLite:** Banco de dados local para armazenar receitas.
+- **Sistema Operacional:** Windows, macOS ou Linux.
+- **Android Studio:** De preferência a versão mais atualizada.
+- **Android SDK:** Incluindo as ferramentas de build necessárias.
+- **Dispositivo Virtual:** Emulador Android configurado (recomenda-se Android 10 ou superior).
+- **Google Account:** Para autenticação via Firebase.
 
-## Como Rodar o Projeto
+## Como Instalar e Utilizar o Projeto
 
 1. **Clone o repositório:**
+
    ```bash
    git clone https://github.com/HenriqueAX/icook-android-app.git
    ```
 
 2. **Abra o projeto no Android Studio:**
+
    - No Android Studio, vá em `File -> Open` e selecione o diretório do projeto clonado.
 
-3. **Configure um dispositivo virtual com Android 10:**
+3. **Realize o build o projeto:**
+
+   - Após abrir o projeto, sincronize as dependências e compile o app:
+     - Clique em **`File -> Sync Project with Gradle Files`** para sincronizar as dependências do projeto.
+     - Em seguida, vá em **`Build -> Make Project`** ou pressione `Ctrl+F9` para compilar o código.
+
+4. **Configure um dispositivo virtual com Android 10:**
+
    - Para garantir melhor compatibilidade, crie um emulador com a versão Android 10 no Android Studio.
-   - No Android Studio, acesse o `Device Manager`, clique em `Create Virtual Device`, selecione um dispositivo e de preferência escolha a versão Android 10 (API Level 29) para o emulador.
+   - No Android Studio, acesse o **`Device Manager`**, clique em **`Create Virtual Device`**, selecione um dispositivo e, de preferência, escolha a versão Android 10 (API Level 29) para o emulador.
 
-4. **Compile e rode o projeto:**
-   - Conecte o dispositivo físico ou emulador criado e clique no botão `Run` para rodar o aplicativo.
+5. **Compile e rode o projeto:**
 
-## Estrutura de Banco de Dados
+   - Conecte o dispositivo físico ou emulador criado.
+   - Clique no botão **`Run`** (ícone de play verde) na barra de ferramentas ou vá em **`Run -> Run 'app'`** para instalar e rodar o aplicativo.
 
-O banco de dados SQLite armazena as receitas em uma tabela chamada `recipes` com os seguintes campos:
+## Uso do aplicativo
 
-- `id`: ID único da receita (Primary Key).
-- `name`: Nome da receita.
-- `prep_time`: Tempo de preparo da receita (em minutos).
-- `rating`: Avaliação da receita (1 a 5).
-- `ingredients`: Ingredientes necessários para a receita.
-- `instructions`: Instruções de preparo.
-- `image_res_id`: ID do recurso da imagem (opcional).
-- `image_uri`: URI da imagem adicionada pelo usuário (opcional).
+1. **Inicie o App:**
 
-## Adicionando uma Receita
+   - Ao abrir, você será solicitado a fazer login usando sua conta Google.
 
-Para adicionar uma nova receita:
-1. Clique no ícone de adição na tela principal.
-2. Preencha os campos obrigatórios, como nome, tempo de preparo, avaliação, ingredientes e instruções.
-3. Opcionalmente, selecione uma imagem da galeria.
-4. Clique no botão "Adicionar Receita" para salvar a receita no banco de dados.
+2. **Buscar Receitas:**
 
-## Credenciais de Login
+   - Use a barra de busca no topo para digitar o nome de uma receita.
+   - A lista atualiza em tempo real conforme você digita, exibindo as receitas correspondentes.
 
-As credenciais padrão para acessar o aplicativo são:
-- **Usuário:** `admin`
-- **Senha:** `1234`
+3. **Adicionar uma Nova Receita:**
 
-Caso as credenciais estejam incorretas, uma mensagem de erro será exibida.
+   - Clique no botão de adicionar (ícone de mais) localizado na parte inferior da tela.
+   - Preencha os detalhes da receita, incluindo nome, tempo de preparação, avaliação, ingredientes, instruções e selecione uma imagem.
+   - Salve a receita para adicioná-la à sua coleção.
+
+4. **Visualizar Detalhes da Receita:**
+
+   - Clique em qualquer receita na lista para ver suas informações detalhadas, incluindo ingredientes e etapas de preparação.
+
+5. **Logout:**
+
+   - Clique no botão de logout no canto superior direito para sair da sua conta Google de forma segura.
