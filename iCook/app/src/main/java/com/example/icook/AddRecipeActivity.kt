@@ -16,6 +16,7 @@ import java.io.IOException
 
 class AddRecipeActivity : AppCompatActivity() {
 
+    // Declaração dos componentes da interface gráfica
     private lateinit var etRecipeName: EditText
     private lateinit var etPrepTime: EditText
     private lateinit var etRating: EditText
@@ -23,7 +24,7 @@ class AddRecipeActivity : AppCompatActivity() {
     private lateinit var etInstructions: EditText
     private lateinit var btnAdd: Button
     private lateinit var imgRecipe: ImageView
-    private lateinit var btnSearchRecipes: ImageButton // Adicionado para o botão de busca
+    private lateinit var btnSearchRecipes: ImageButton
     private var selectedImageUri: Uri? = null
     private lateinit var dbHelper: DatabaseHelper
 
@@ -31,6 +32,7 @@ class AddRecipeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_recipe)
 
+        // Inicialização de todos os componentes da interface com base nos IDs
         etRecipeName = findViewById(R.id.etRecipeName)
         etPrepTime = findViewById(R.id.etPrepTime)
         etRating = findViewById(R.id.etRating)
@@ -38,28 +40,30 @@ class AddRecipeActivity : AppCompatActivity() {
         etInstructions = findViewById(R.id.etInstructions)
         btnAdd = findViewById(R.id.btnAdd)
         imgRecipe = findViewById(R.id.imgRecipe)
-        btnSearchRecipes = findViewById(R.id.btnSearchRecipes) // Inicialização do botão de busca
+        btnSearchRecipes = findViewById(R.id.btnSearchRecipes)
 
+        // Inicializa o banco de dados
         dbHelper = DatabaseHelper(this)
 
+        // Ação para selecionar uma imagem da galeria
         imgRecipe.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK).apply {
-                type = "image/*"
-            }
+            val intent = Intent(Intent.ACTION_PICK).apply { type = "image/*" }
             startActivityForResult(intent, 100)
         }
 
+        // Ação para adicionar a receita
         btnAdd.setOnClickListener {
             addRecipe()
         }
 
-        // Adicionando funcionalidade para o botão de busca
+        // Ação para navegar até a tela de busca de receitas
         btnSearchRecipes.setOnClickListener {
             val intent = Intent(this, SearchRecipeActivity::class.java)
             startActivity(intent)
         }
     }
 
+    // Função para adicionar a receita ao banco de dados
     private fun addRecipe() {
         val name = etRecipeName.text.toString()
         val prepTime = etPrepTime.text.toString().toIntOrNull() ?: 0
@@ -67,6 +71,7 @@ class AddRecipeActivity : AppCompatActivity() {
         val ingredients = etIngredients.text.toString()
         val instructions = etInstructions.text.toString()
 
+        // Validação dos campos e adição da receita
         if (name.isNotEmpty() && prepTime > 0 && rating in 1..5) {
             val savedImagePath = selectedImageUri?.let { saveImageToInternalStorage(it) }
             val recipe = Recipe(
@@ -76,23 +81,19 @@ class AddRecipeActivity : AppCompatActivity() {
                 rating = rating,
                 ingredients = ingredients,
                 instructions = instructions,
-                imageUri = savedImagePath // Salve o caminho interno da imagem
+                imageUri = savedImagePath
             )
             dbHelper.addRecipe(recipe)
             Toast.makeText(this, "Receita adicionada com sucesso!", Toast.LENGTH_SHORT).show()
 
-            // Retorna para a tela anterior e indica que houve uma alteração
             setResult(Activity.RESULT_OK)
             finish()
         } else {
-            Toast.makeText(
-                this,
-                "Por favor, preencha todos os campos corretamente.",
-                Toast.LENGTH_SHORT
-            ).show()
+            Toast.makeText(this, "Por favor, preencha todos os campos corretamente.", Toast.LENGTH_SHORT).show()
         }
     }
 
+    // Manipula o retorno da seleção de imagem
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
@@ -101,6 +102,7 @@ class AddRecipeActivity : AppCompatActivity() {
         }
     }
 
+    // Função para salvar a imagem no armazenamento interno
     private fun saveImageToInternalStorage(uri: Uri): String? {
         val fileName = "recipe_image_${System.currentTimeMillis()}.jpg"
         val file = File(filesDir, fileName)

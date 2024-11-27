@@ -10,58 +10,76 @@ import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
 
+// Activity responsável pela busca de receitas
 class SearchRecipeActivity : AppCompatActivity() {
 
-    private lateinit var recipeRecyclerView: RecyclerView
-    private lateinit var btnSearch: Button
-    private lateinit var searchField: EditText
-    private lateinit var dbHelper: DatabaseHelper
-    private lateinit var recipeAdapter: RecipeAdapter
-    private var allRecipes = listOf<Recipe>()
-    private var filteredRecipes = listOf<Recipe>()
+    private lateinit var recipeRecyclerView: RecyclerView // RecyclerView para receitas
+    private lateinit var btnSearch: Button // Botão de busca
+    private lateinit var searchField: EditText // Campo de texto para busca
+    private lateinit var dbHelper: DatabaseHelper // Helper para acessar o banco de dados
+    private lateinit var recipeAdapter: RecipeAdapter // Adaptador do RecyclerView
+    private lateinit var mGoogleSignInClient: GoogleSignInClient // Cliente de login do Google
+    private var allRecipes = listOf<Recipe>() // Lista completa de receitas
+    private var filteredRecipes = listOf<Recipe>() // Lista filtrada de receitas
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_recipe)
 
-        // Inicializa os componentes do layout
+        // Inicializa os componentes visuais do layout
         recipeRecyclerView = findViewById(R.id.recipeRecyclerView)
         btnSearch = findViewById(R.id.btnSearch)
         searchField = findViewById(R.id.searchField)
+        val btnLogout = findViewById<Button>(R.id.logout_button)
 
-        // Inicializa o banco de dados e carrega receitas
+        // Carrega todas as receitas do banco de dados
         dbHelper = DatabaseHelper(this)
-        loadRecipes()
+        allRecipes = dbHelper.getAllRecipes()
+        filteredRecipes = allRecipes
 
-        // Configura o RecyclerView
+        // Configura o RecyclerView para exibir receitas
         setupRecyclerView()
 
-        // Configura o botão de busca
+        // Configura o cliente de login do Google para logout
+        mGoogleSignInClient = GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_SIGN_IN)
+
+        // Configura o clique no botão de busca para abrir os resultados em outra Activity
         btnSearch.setOnClickListener {
             searchRecipes()
         }
 
-        // Adiciona listener ao campo de texto para busca dinâmica
+        // Adiciona um listener ao campo de texto para busca dinâmica
         searchField.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                filterRecipes(s.toString())
+                filterRecipes(s.toString()) // Atualiza a lista filtrada em tempo real
             }
             override fun afterTextChanged(s: Editable?) {}
         })
 
-        // Configura o botão de adicionar receitas
+        // Configura o botão de adicionar nova receita
         val btnAddRecipe = findViewById<ImageButton>(R.id.btnAddRecipe)
         btnAddRecipe.setOnClickListener {
             val intent = Intent(this, AddRecipeActivity::class.java)
-            startActivityForResult(intent, 100)
+            startActivityForResult(intent, 100) // Inicia a Activity para adicionar receitas
+        }
+
+        // Configura o botão de logout para deslogar o usuário
+        btnLogout.setOnClickListener {
+            logout()
         }
     }
 
+    // Configura o RecyclerView com layout e adaptador
     private fun setupRecyclerView() {
         recipeRecyclerView.layoutManager = LinearLayoutManager(this)
         recipeAdapter = RecipeAdapter(this, filteredRecipes) { recipe ->
+            // Navega para a tela de detalhes da receita ao clicar em um item
             val intent = Intent(this, RecipeDetailActivity::class.java)
             intent.putExtra("RECIPE", recipe)
             startActivity(intent)
@@ -69,6 +87,7 @@ class SearchRecipeActivity : AppCompatActivity() {
         recipeRecyclerView.adapter = recipeAdapter
     }
 
+    // Inicia a busca e passa a consulta para outra Activity
     private fun searchRecipes() {
         val query = searchField.text.toString()
         val intent = Intent(this, RecipeResultActivity::class.java)
@@ -76,13 +95,15 @@ class SearchRecipeActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    // Filtra receitas com base na consulta de texto
     private fun filterRecipes(query: String) {
         // Filtra as receitas com base no texto digitado
         filteredRecipes = if (query.isEmpty()) {
-            allRecipes
+            allRecipes // Retorna todas as receitas se a consulta estiver vazia
         } else {
-            allRecipes.filter { it.name.contains(query, ignoreCase = true) }
+            allRecipes.filter { it.name.contains(query, ignoreCase = true) } // Filtra receitas por nome
         }
+        // Atualiza o adaptador com a lista filtrada
         recipeAdapter = RecipeAdapter(this, filteredRecipes) { recipe ->
             val intent = Intent(this, RecipeDetailActivity::class.java)
             intent.putExtra("RECIPE", recipe)
@@ -91,17 +112,22 @@ class SearchRecipeActivity : AppCompatActivity() {
         recipeRecyclerView.adapter = recipeAdapter
     }
 
-    private fun loadRecipes() {
-        allRecipes = dbHelper.getAllRecipes()
-        filteredRecipes = allRecipes.toList()
+    // Realiza logout do usuário e retorna para a tela de login
+    private fun logout() {
+        FirebaseAuth.getInstance().signOut()
+        mGoogleSignInClient.signOut().addOnCompleteListener {
+            val intent = Intent(this, SignInActivity::class.java)
+            startActivity(intent)
+            finish() // Finaliza a Activity atual
+        }
     }
 
+    // Atualiza a lista de receitas após retornar da tela de adição
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 100 && resultCode == RESULT_OK) {
-            // Atualiza as receitas ao retornar da tela de adição
-            loadRecipes()
-            filterRecipes(searchField.text.toString())
+            allRecipes = dbHelper.getAllRecipes() // Recarrega as receitas
+            filterRecipes(searchField.text.toString()) // Aplica o filtro novamente
         }
     }
 }

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "802414559487",
+    "project_id": "icook-auth",
+    "storage_bucket": "icook-auth.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:802414559487:android:3469b177c879c62f114cca",
+        "android_client_info": {
+          "package_name": "com.example.icook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "802414559487-egn5ct5lstev56b64qcblr4o3537q1nv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.icook",
+            "certificate_hash": "0836e1ba87c3c75181fe6467cda5e099b4270720"
+          }
+        },
+        {
+          "client_id": "802414559487-gv93ukdqqq35fnsttvrpik4ibs8037i6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwXV1L3gmDW45JNgJUqdzSQtc6ArQAcv4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "802414559487-gv93ukdqqq35fnsttvrpik4ibs8037i6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

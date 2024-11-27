@@ -2,4 +2,5 @@
     <string name="app_name">iCook</string>
     <string name="recipe_image">Recipe Image</string>
     <string name="prep_time_icon">Preparation Time Icon</string>
+    <string name="default_web_client_id">802414559487-egn5ct5lstev56b64qcblr4o3537q1nv.apps.googleusercontent.com</string>
 </resources>

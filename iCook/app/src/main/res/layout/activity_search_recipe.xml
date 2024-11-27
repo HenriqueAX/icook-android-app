@@ -1,16 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- Botão de logout no canto superior direito -->
+    <Button
+        android:id="@+id/logout_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        android:layout_gravity="end"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Campo de entrada para texto de busca -->
     <EditText
         android:id="@+id/searchField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Buscar receitas..." />
 
+    <!-- Botão que realiza a ação de busca -->
     <Button
         android:id="@+id/btnSearch"
         android:layout_width="wrap_content"
@@ -18,38 +28,40 @@
         android:text="Buscar"
         android:layout_marginTop="8dp" />
 
+    <!-- RecyclerView para exibir a lista de receitas -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recipeRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
 
+    <!-- Layout horizontal para botões no rodapé -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center">
 
+        <!-- Botão com ícone de busca -->
         <ImageButton
             android:id="@+id/btnSearchRecipes"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
             android:layout_weight="1"
-            android:background="?attr/selectableItemBackground"
             android:src="@drawable/ic_search"
             android:contentDescription="Buscar Receitas"
-            android:scaleType="fitCenter"
-            android:layout_gravity="center"
-            android:layout_height="40dp"
-            android:layout_width="40dp" />
+            android:background="?attr/selectableItemBackground"
+            android:scaleType="fitCenter" />
 
+        <!-- Botão com ícone de adicionar nova receita -->
         <ImageButton
             android:id="@+id/btnAddRecipe"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
             android:layout_weight="1"
-            android:background="?attr/selectableItemBackground"
             android:src="@drawable/ic_add"
             android:contentDescription="Adicionar Receita"
-            android:scaleType="fitCenter"
-            android:layout_gravity="center"
-            android:layout_height="40dp"
-            android:layout_width="40dp" />
+            android:background="?attr/selectableItemBackground"
+            android:scaleType="fitCenter" />
     </LinearLayout>
 </LinearLayout>

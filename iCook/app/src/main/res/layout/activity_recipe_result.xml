@@ -1,20 +1,43 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/resultTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Resultados da busca"
-        android:textSize="24sp"
-        android:layout_marginBottom="16dp" />
-
+    <!-- RecyclerView que exibe a lista de receitas -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recipeRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Container para os botões adicionais no rodapé -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <!-- Botão para buscar receitas (ícone de lupa) -->
+        <ImageButton
+            android:id="@+id/btnSearchRecipes"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_search"
+            android:contentDescription="Buscar Receitas"
+            android:background="?attr/selectableItemBackground"
+            android:scaleType="fitCenter" />
+
+        <!-- Botão para adicionar uma nova receita (ícone de adicionar) -->
+        <ImageButton
+            android:id="@+id/btnAddRecipe"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_add"
+            android:contentDescription="Adicionar Receita"
+            android:background="?attr/selectableItemBackground"
+            android:scaleType="fitCenter" />
+    </LinearLayout>
 </LinearLayout>
