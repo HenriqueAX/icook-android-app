@@ -6,7 +6,7 @@
     android:gravity="center"
     android:padding="16dp">
 
-    <!-- Adiciona a logo -->
+    <!-- Exibe a logo do aplicativo -->
     <ImageView
         android:id="@+id/logoImageView"
         android:layout_width="150dp"
@@ -15,7 +15,7 @@
         android:contentDescription="Logo do aplicativo"
         android:layout_marginBottom="32dp" />
 
-    <!-- Campo de texto para o nome de usuário -->
+    <!-- Campo de texto para nome de usuário -->
     <EditText
         android:id="@+id/etUsername"
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
         android:inputType="text"
         android:layout_marginBottom="16dp"/>
 
-    <!-- Campo de texto para a senha -->
+    <!-- Campo de texto para senha -->
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="match_parent"

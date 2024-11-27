@@ -7,40 +7,52 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
+// Activity principal de login
 class MainActivity : AppCompatActivity() {
-    private lateinit var etUsername: EditText
-    private lateinit var etPassword: EditText
-    private lateinit var btnLogin: Button
-    private lateinit var dbHelper: DatabaseHelper
+
+    // Declaração dos componentes da interface gráfica
+    private lateinit var etUsername: EditText // Campo de texto para o nome de usuário
+    private lateinit var etPassword: EditText // Campo de texto para a senha
+    private lateinit var btnLogin: Button // Botão de login
+    private lateinit var dbHelper: DatabaseHelper // Instância do helper para interagir com o banco de dados
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Inicializa os campos de entrada e o botão de login com os IDs do layout
         etUsername = findViewById(R.id.etUsername)
         etPassword = findViewById(R.id.etPassword)
         btnLogin = findViewById(R.id.btnLogin)
 
+        // Inicializa o banco de dados para poder interagir com ele
         dbHelper = DatabaseHelper(this)
 
+        // Verifica se o banco de dados está vazio e, se necessário, adiciona receitas padrão
         if (dbHelper.getAllRecipes().isEmpty()) {
-            addDefaultRecipes()
+            addDefaultRecipes() // Função que adiciona receitas de exemplo ao banco
         }
 
+        // Configura o evento de clique no botão de login
         btnLogin.setOnClickListener {
-            val username = etUsername.text.toString()
-            val password = etPassword.text.toString()
+            val username = etUsername.text.toString() // Obtém o nome de usuário digitado
+            val password = etPassword.text.toString() // Obtém a senha digitada
 
+            // Valida se as credenciais correspondem ao usuário e senha padrões
             if (username == "admin" && password == "1234") {
+                // Se o login for bem-sucedido, navega para a tela de busca de receitas
                 val intent = Intent(this, SearchRecipeActivity::class.java)
                 startActivity(intent)
             } else {
+                // Se as credenciais forem inválidas, exibe uma mensagem de erro
                 Toast.makeText(this, "Usuário e senha incorretos", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
+    // Função para adicionar receitas padrão ao banco de dados
     private fun addDefaultRecipes() {
+        // Criação de uma receita de exemplo: Bolo de Chocolate
         val recipe1 = Recipe(
             id = 1,
             name = "Bolo de Chocolate",
@@ -57,6 +69,7 @@ class MainActivity : AppCompatActivity() {
             imageResId = R.drawable.bolo_chocolate
         )
 
+        // Criação de outra receita de exemplo: Bolo de Cenoura
         val recipe2 = Recipe(
             id = 2,
             name = "Bolo de Cenoura",
@@ -72,6 +85,7 @@ class MainActivity : AppCompatActivity() {
             imageResId = R.drawable.bolo_cenoura
         )
 
+        // Criação de uma receita adicional: Bolo de Laranja
         val recipe3 = Recipe(
             id = 3,
             name = "Bolo de Laranja",
@@ -88,6 +102,7 @@ class MainActivity : AppCompatActivity() {
             imageResId = R.drawable.bolo_laranja
         )
 
+        // Adiciona as receitas criadas no banco de dados
         dbHelper.addRecipe(recipe1)
         dbHelper.addRecipe(recipe2)
         dbHelper.addRecipe(recipe3)

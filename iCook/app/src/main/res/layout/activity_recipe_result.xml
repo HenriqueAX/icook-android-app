@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- Título para os resultados da busca -->
     <TextView
         android:id="@+id/resultTitle"
         android:layout_width="wrap_content"
@@ -13,6 +14,7 @@
         android:textSize="24sp"
         android:layout_marginBottom="16dp" />
 
+    <!-- Lista de receitas exibidas após a busca -->
     <ListView
         android:id="@+id/recipeListView"
         android:layout_width="match_parent"

@@ -5,6 +5,7 @@
     android:orientation="horizontal"
     android:padding="4dp">
 
+    <!-- Bullet point para o ingrediente -->
     <TextView
         android:id="@+id/bulletPoint"
         android:layout_width="wrap_content"
@@ -12,10 +13,11 @@
         android:text="•"
         android:textSize="16sp" />
 
+    <!-- Texto do ingrediente -->
     <TextView
         android:id="@+id/ingredientText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:layout_marginStart="4dp" /> <!-- Espaço entre a bolinha e o texto -->
+        android:layout_marginStart="4dp" />
 </LinearLayout>
