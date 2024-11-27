@@ -7,7 +7,21 @@
     android:padding="16dp"
     tools:context=".SignInActivity">
 
+    <!-- Texto acima do botão -->
+    <TextView
+        android:id="@+id/textInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Faça o login"
+        android:textSize="30dp"
+        android:textColor="@android:color/black"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="250dp"
+        android:gravity="center" />
 
+    <!-- Container do botão de login -->
     <LinearLayout
         android:layout_centerInParent="true"
         android:layout_marginTop="50dp"
@@ -35,9 +49,6 @@
             android:text="Sign up with Google"
             android:textColor="@color/white"
             android:textSize="20sp" />
-
     </LinearLayout>
-
-
 
 </RelativeLayout>
