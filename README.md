@@ -39,7 +39,7 @@ O projeto está organizado da seguinte forma:
 
 3. **Configure um dispositivo virtual com Android 10:**
    - Para garantir melhor compatibilidade, crie um emulador com a versão Android 10 no Android Studio.
-   - No Android Studio, acesse o `AVD Manager`, clique em `Create Virtual Device`, selecione um dispositivo e escolha a versão Android 10 (API Level 29) para o emulador.
+   - No Android Studio, acesse o `Device Manager`, clique em `Create Virtual Device`, selecione um dispositivo e de preferência escolha a versão Android 10 (API Level 29) para o emulador.
 
 4. **Compile e rode o projeto:**
    - Conecte o dispositivo físico ou emulador criado e clique no botão `Run` para rodar o aplicativo.
