@@ -42,7 +42,7 @@ O **iCook** é um aplicativo Android projetado para ajudar os usuários a descob
 ## Requisitos
 
 - **Sistema Operacional:** Windows, macOS ou Linux.
-- **Android Studio:** Versão 2020.3.1 ou superior.
+- **Android Studio:** De preferência a versão mais atualizada.
 - **Android SDK:** Incluindo as ferramentas de build necessárias.
 - **Dispositivo Virtual:** Emulador Android configurado (recomenda-se Android 10 ou superior).
 - **Google Account:** Para autenticação via Firebase.
