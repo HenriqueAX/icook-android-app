@@ -1,33 +1,39 @@
 package com.example.icook
 
+import android.content.Intent
 import android.os.Bundle
-import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 // Activity que exibe os resultados da busca de receitas
 class RecipeResultActivity : AppCompatActivity() {
 
-    private lateinit var recipeListView: ListView // Lista de receitas
-    private lateinit var adapter: RecipeAdapter // Adaptador para a lista
+    private lateinit var recipeRecyclerView: RecyclerView // RecyclerView para receitas
     private lateinit var dbHelper: DatabaseHelper // Helper para acessar o banco de dados
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_result)
 
-        recipeListView = findViewById(R.id.recipeListView) // Inicializa a lista de receitas
-        val query = intent.getStringExtra("QUERY") ?: "" // Obtém o termo de busca
+        // Inicializa o RecyclerView
+        recipeRecyclerView = findViewById(R.id.recipeRecyclerView)
 
-        dbHelper = DatabaseHelper(this) // Inicializa o helper para o banco de dados
-        val allRecipes = dbHelper.getAllRecipes() // Obtém todas as receitas do banco
+        // Obtém a consulta passada pela busca
+        val query = intent.getStringExtra("QUERY") ?: ""
 
-        // Filtra as receitas com base na consulta
-        val filteredRecipes = allRecipes.filter { recipe ->
-            recipe.name.contains(query, ignoreCase = true)
+        // Inicializa o banco de dados e filtra as receitas
+        dbHelper = DatabaseHelper(this)
+        val allRecipes = dbHelper.getAllRecipes()
+        val filteredRecipes = allRecipes.filter { it.name.contains(query, ignoreCase = true) }
+
+        // Configura o RecyclerView
+        recipeRecyclerView.layoutManager = LinearLayoutManager(this)
+        recipeRecyclerView.adapter = RecipeAdapter(this, filteredRecipes) { recipe ->
+            // Abre a tela de detalhes da receita
+            val intent = Intent(this, RecipeDetailActivity::class.java)
+            intent.putExtra("RECIPE", recipe)
+            startActivity(intent)
         }
-
-        // Configura o adaptador com as receitas filtradas
-        adapter = RecipeAdapter(this, filteredRecipes)
-        recipeListView.adapter = adapter // Define o adaptador para o ListView
     }
 }

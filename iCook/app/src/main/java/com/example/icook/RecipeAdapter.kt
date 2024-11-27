@@ -1,69 +1,66 @@
 package com.example.icook
 
 import android.content.Context
-import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.FileProvider
+import androidx.recyclerview.widget.RecyclerView
 import java.io.File
 
-// Adaptador que conecta a lista de receitas ao ListView
-class RecipeAdapter(private val context: Context, private val recipes: List<Recipe>) : BaseAdapter() {
+class RecipeAdapter(
+    private val context: Context,
+    private val recipes: List<Recipe>,
+    private val onItemClick: (Recipe) -> Unit // Callback para clique no item
+) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
 
-    // Retorna o número total de receitas
-    override fun getCount(): Int = recipes.size
+    // ViewHolder para o RecyclerView
+    inner class RecipeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val recipeName: TextView = view.findViewById(R.id.recipeName)
+        val prepTime: TextView = view.findViewById(R.id.prepTime)
+        val rating: TextView = view.findViewById(R.id.recipeRating)
+        val recipeImage: ImageView = view.findViewById(R.id.recipeImage)
 
-    // Retorna a receita na posição especificada
-    override fun getItem(position: Int): Any = recipes[position]
+        // Liga os dados ao ViewHolder
+        fun bind(recipe: Recipe) {
+            recipeName.text = recipe.name
+            prepTime.text = "${recipe.prepTime} min"
+            rating.text = "${recipe.rating}/5"
 
-    // Retorna o ID do item na posição especificada
-    override fun getItemId(position: Int): Long = position.toLong()
-
-    // Cria e configura a visualização de cada item no ListView
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        // Infla ou reutiliza a view do item
-        val view: View = convertView ?: LayoutInflater.from(context).inflate(R.layout.recipe_item, parent, false)
-
-        // Obtém os componentes da interface (nome, tempo, avaliação e imagem)
-        val recipeName = view.findViewById<TextView>(R.id.recipeName)
-        val prepTime = view.findViewById<TextView>(R.id.prepTime)
-        val rating = view.findViewById<TextView>(R.id.recipeRating)
-        val recipeImage = view.findViewById<ImageView>(R.id.recipeImage)
-
-        // Obtém a receita da lista
-        val recipe = recipes[position]
-
-        // Define os dados da receita nos componentes visuais
-        recipeName.text = recipe.name
-        prepTime.text = "${recipe.prepTime} min"
-        rating.text = "${recipe.rating}/5"
-
-        // Configura a imagem da receita, se disponível
-        if (recipe.imageResId != null) {
-            recipeImage.setImageResource(recipe.imageResId) // Imagem do recurso
-        } else if (recipe.imageUri != null) {
-            val imageFile = File(recipe.imageUri)
-            if (imageFile.exists()) {
-                val imageUri = FileProvider.getUriForFile(context, "${context.packageName}.provider", imageFile)
-                recipeImage.setImageURI(imageUri) // Imagem fornecida pelo usuário
+            if (recipe.imageResId != null) {
+                recipeImage.setImageResource(recipe.imageResId)
+            } else if (recipe.imageUri != null) {
+                val imageFile = File(recipe.imageUri)
+                if (imageFile.exists()) {
+                    val imageUri: Uri = FileProvider.getUriForFile(
+                        context,
+                        "${context.packageName}.provider",
+                        imageFile
+                    )
+                    recipeImage.setImageURI(imageUri)
+                } else {
+                    recipeImage.setImageResource(R.drawable.recipe_placeholder)
+                }
             } else {
-                recipeImage.setImageResource(R.drawable.recipe_placeholder) // Imagem placeholder
+                recipeImage.setImageResource(R.drawable.recipe_placeholder)
             }
-        } else {
-            recipeImage.setImageResource(R.drawable.recipe_placeholder) // Imagem placeholder
-        }
 
-        // Configura o clique no item para abrir os detalhes da receita
-        view.setOnClickListener {
-            val intent = Intent(context, RecipeDetailActivity::class.java)
-            intent.putExtra("RECIPE", recipe) // Passa a receita para a próxima Activity
-            context.startActivity(intent) // Inicia a Activity de detalhes
+            // Configura o clique no item
+            itemView.setOnClickListener { onItemClick(recipe) }
         }
-
-        return view // Retorna a view configurada para o ListView
     }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
+        val view = LayoutInflater.from(context).inflate(R.layout.recipe_item, parent, false)
+        return RecipeViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
+        holder.bind(recipes[position])
+    }
+
+    override fun getItemCount(): Int = recipes.size
 }
