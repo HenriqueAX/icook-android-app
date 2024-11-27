@@ -74,4 +74,7 @@ class RecipeAdapter(
     }
 
     override fun getItemCount(): Int = recipes.size
+    fun updateRecipes(filteredRecipes: List<Recipe>) {
+
+    }
 }
