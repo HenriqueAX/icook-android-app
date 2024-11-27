@@ -31,14 +31,18 @@ O projeto está organizado da seguinte forma:
 
 1. **Clone o repositório:**
    ```bash
-   git clone https://github.com/seu-usuario/icook-app.git
+   git clone https://github.com/HenriqueAX/icook-android-app.git
    ```
 
 2. **Abra o projeto no Android Studio:**
    - No Android Studio, vá em `File -> Open` e selecione o diretório do projeto clonado.
 
-3. **Compile e rode o projeto:**
-   - Conecte um emulador ou dispositivo físico e clique no botão `Run` para rodar o aplicativo.
+3. **Configure um dispositivo virtual com Android 10:**
+   - Para garantir melhor compatibilidade, crie um emulador com a versão Android 10 no Android Studio.
+   - No Android Studio, acesse o `Device Manager`, clique em `Create Virtual Device`, selecione um dispositivo e de preferência escolha a versão Android 10 (API Level 29) para o emulador.
+
+4. **Compile e rode o projeto:**
+   - Conecte o dispositivo físico ou emulador criado e clique no botão `Run` para rodar o aplicativo.
 
 ## Estrutura de Banco de Dados
 
