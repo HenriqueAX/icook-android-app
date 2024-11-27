@@ -97,6 +97,7 @@ class SearchRecipeActivity : AppCompatActivity() {
 
     // Filtra receitas com base na consulta de texto
     private fun filterRecipes(query: String) {
+        // Filtra as receitas com base no texto digitado
         filteredRecipes = if (query.isEmpty()) {
             allRecipes // Retorna todas as receitas se a consulta estiver vazia
         } else {
