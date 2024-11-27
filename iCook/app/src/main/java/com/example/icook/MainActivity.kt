@@ -2,53 +2,73 @@ package com.example.icook
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.os.Handler
+import android.os.Looper
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
-// Activity responsável pelo login do usuário
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var etUsername: EditText         // Campo para nome de usuário
-    private lateinit var etPassword: EditText         // Campo para senha
-    private lateinit var btnLogin: Button             // Botão de login
-    private lateinit var dbHelper: DatabaseHelper     // Helper para interagir com o banco de dados
+    // Declaração das variáveis necessárias para autenticação e interface
+    private lateinit var mGoogleSignInClient: GoogleSignInClient
+    private lateinit var mAuth: FirebaseAuth
+
+    private lateinit var textViewName: TextView
+    private lateinit var progressBar: ProgressBar // Spinner de carregamento
+    private lateinit var dbHelper: DatabaseHelper // Gerencia o banco de dados local
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Inicialização dos componentes da interface com base no layout XML
-        etUsername = findViewById(R.id.etUsername)
-        etPassword = findViewById(R.id.etPassword)
-        btnLogin = findViewById(R.id.btnLogin)
+        // Configuração do Firebase Authentication
+        mAuth = FirebaseAuth.getInstance()
 
-        // Inicializa o banco de dados
+        // Configuração das opções de login do Google
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id)) // Token do cliente Web
+            .requestEmail() // Solicita o e-mail do usuário
+            .build()
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        // Inicializa os componentes visuais
+        textViewName = findViewById(R.id.name)
+        progressBar = findViewById(R.id.progress_bar)
         dbHelper = DatabaseHelper(this)
 
-        // Adiciona receitas padrão se o banco de dados estiver vazio
+        // Adiciona receitas padrão ao banco de dados, se necessário
         if (dbHelper.getAllRecipes().isEmpty()) {
-            addDefaultRecipes() // Função que adiciona receitas iniciais ao banco
+            addDefaultRecipes() // Adiciona receitas predefinidas
         }
 
-        // Configura o evento de clique no botão de login
-        btnLogin.setOnClickListener {
-            val username = etUsername.text.toString()
-            val password = etPassword.text.toString()
+        // Verifica se há um usuário logado no Firebase
+        val user = Firebase.auth.currentUser
+        if (user != null) {
+            // Exibe o nome do usuário logado
+            val userName = user.displayName ?: "Usuário"
+            textViewName.text = "Bem-vindo, $userName"
+            progressBar.isVisible = true // Exibe o spinner de carregamento
 
-            // Valida as credenciais de login
-            if (username == "admin" && password == "1234") {
-                val intent = Intent(this, SearchRecipeActivity::class.java)
-                startActivity(intent) // Navega para a tela de busca de receitas
-            } else {
-                Toast.makeText(this, "Usuário e senha incorretos", Toast.LENGTH_SHORT).show()
-            }
+            // Aguarda 3 segundos e redireciona para a tela de busca de receitas
+            Handler(Looper.getMainLooper()).postDelayed({
+                navigateToSearchRecipeActivity() // Redireciona para a próxima tela
+            }, 3000) // Tempo de espera: 3 segundos
+        } else {
+            textViewName.text = "Faça login para continuar" // Mensagem para usuários não logados
         }
     }
 
-    // Adiciona receitas padrão ao banco de dados
+    // Função que adiciona receitas padrão ao banco de dados
     private fun addDefaultRecipes() {
+        // Receita 1: Bolo de Chocolate
         val recipe1 = Recipe(
             id = 1,
             name = "Bolo de Chocolate",
@@ -65,6 +85,7 @@ class MainActivity : AppCompatActivity() {
             imageResId = R.drawable.bolo_chocolate
         )
 
+        // Receita 2: Bolo de Cenoura
         val recipe2 = Recipe(
             id = 2,
             name = "Bolo de Cenoura",
@@ -80,6 +101,7 @@ class MainActivity : AppCompatActivity() {
             imageResId = R.drawable.bolo_cenoura
         )
 
+        // Receita 3: Bolo de Laranja
         val recipe3 = Recipe(
             id = 3,
             name = "Bolo de Laranja",
@@ -100,5 +122,12 @@ class MainActivity : AppCompatActivity() {
         dbHelper.addRecipe(recipe1)
         dbHelper.addRecipe(recipe2)
         dbHelper.addRecipe(recipe3)
+    }
+
+    // Função para redirecionar para a tela de busca de receitas
+    private fun navigateToSearchRecipeActivity() {
+        val intent = Intent(this, SearchRecipeActivity::class.java)
+        startActivity(intent)
+        finish() // Finaliza a `MainActivity` para evitar que o usuário volte para ela
     }
 }

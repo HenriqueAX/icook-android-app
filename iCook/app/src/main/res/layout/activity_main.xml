@@ -1,49 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="16dp">
+    tools:context=".MainActivity">
 
-    <!-- Exibe a logo do aplicativo -->
-    <ImageView
-        android:id="@+id/logoImageView"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:src="@drawable/ic_icook"
-        android:contentDescription="Logo do aplicativo"
-        android:layout_marginBottom="32dp" />
-
-    <!-- Campo de texto para nome de usuário -->
-    <EditText
-        android:id="@+id/etUsername"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Usuário"
-        android:padding="12dp"
-        android:textSize="16sp"
-        android:backgroundTint="#4A148C"
-        android:inputType="text"
-        android:layout_marginBottom="16dp"/>
-
-    <!-- Campo de texto para senha -->
-    <EditText
-        android:id="@+id/etPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Senha"
-        android:padding="12dp"
-        android:textSize="16sp"
-        android:backgroundTint="#4A148C"
-        android:inputType="textPassword"
-        android:layout_marginBottom="24dp"/>
-
-    <!-- Botão de login -->
-    <Button
-        android:id="@+id/btnLogin"
+    <!-- Texto de boas-vindas -->
+    <TextView
+        android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login"
-        android:backgroundTint="#4A148C"/>
-</LinearLayout>
+        android:text="Carregando..."
+        android:textSize="30sp"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/progress_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Spinner de carregamento -->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

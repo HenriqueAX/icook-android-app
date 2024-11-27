@@ -5,6 +5,15 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- Botão de Logout -->
+    <Button
+        android:id="@+id/logout_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        android:layout_gravity="end"
+        android:layout_marginBottom="8dp" />
+
     <!-- Campo de texto para a busca de receitas -->
     <EditText
         android:id="@+id/searchField"
