@@ -8,6 +8,8 @@ import android.util.Patterns
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import android.content.res.ColorStateList
+import androidx.core.content.ContextCompat
 
 class SignInActivity : AppCompatActivity() {
 
@@ -19,6 +21,7 @@ class SignInActivity : AppCompatActivity() {
     private lateinit var errorName: TextView
     private lateinit var errorEmail: TextView
     private lateinit var errorPassword: TextView
+    private lateinit var loginErrorMessage: TextView
     private lateinit var loginButtonsContainer: LinearLayout
     private lateinit var registerButtonsContainer: LinearLayout
     private lateinit var googleButtonContainer: LinearLayout
@@ -44,6 +47,7 @@ class SignInActivity : AppCompatActivity() {
         errorName = findViewById(R.id.errorName)
         errorEmail = findViewById(R.id.errorEmail)
         errorPassword = findViewById(R.id.errorPassword)
+        loginErrorMessage = findViewById(R.id.loginErrorMessage)
         loginButtonsContainer = findViewById(R.id.loginButtonsContainer)
         registerButtonsContainer = findViewById(R.id.registerButtonsContainer)
         googleButtonContainer = findViewById(R.id.googleButtonContainer)
@@ -86,6 +90,7 @@ class SignInActivity : AppCompatActivity() {
     private fun switchToRegisterMode() {
         isRegisterMode = true
         editTextName.visibility = View.VISIBLE
+        loginErrorMessage.visibility = View.GONE // Oculta mensagem de erro do login
         loginButtonsContainer.visibility = View.GONE
         registerButtonsContainer.visibility = View.VISIBLE
         googleButtonContainer.visibility = View.GONE
@@ -99,24 +104,33 @@ class SignInActivity : AppCompatActivity() {
         registerButtonsContainer.visibility = View.GONE
         googleButtonContainer.visibility = View.VISIBLE
         textInfo.text = "Faça login ou cadastre-se"
+
+        // Limpa apenas mensagens de erro, mas mantém os campos preenchidos, caso necessário
+        hideValidationError(editTextName, errorName)
+        hideValidationError(editTextEmail, errorEmail)
+        hideValidationError(editTextPassword, errorPassword)
+        loginErrorMessage.visibility = View.GONE
     }
+
 
     private fun performLogin() {
         val email = editTextEmail.text.toString()
         val password = editTextPassword.text.toString()
 
         if (email.isEmpty() || password.isEmpty()) {
-            showValidationError(editTextEmail, errorEmail, "Preencha todos os campos")
-            showValidationError(editTextPassword, errorPassword, "Preencha todos os campos")
+            loginErrorMessage.text = "E-mail ou senha inválidos"
+            loginErrorMessage.visibility = View.VISIBLE
             return
         }
 
         val user = dbHelper.getUserByEmail(email)
         if (user != null && user.password == password) {
+            loginErrorMessage.visibility = View.GONE
             Toast.makeText(this, "Login bem-sucedido", Toast.LENGTH_SHORT).show()
             navigateToMainActivity(user.name)
         } else {
-            Toast.makeText(this, "E-mail ou senha incorretos", Toast.LENGTH_SHORT).show()
+            loginErrorMessage.text = "E-mail ou senha incorretos"
+            loginErrorMessage.visibility = View.VISIBLE
         }
     }
 
@@ -155,20 +169,26 @@ class SignInActivity : AppCompatActivity() {
 
         if (isAdded) {
             Toast.makeText(this, "Cadastro realizado com sucesso", Toast.LENGTH_SHORT).show()
+
+            // Retorna para o modo de login com os dados preenchidos
             switchToLoginMode()
+            editTextEmail.setText(email) // Preenche o campo de e-mail
+            editTextPassword.setText(password) // Preenche o campo de senha
         } else {
             Toast.makeText(this, "Erro ao cadastrar usuário. E-mail já registrado.", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun showValidationError(field: EditText, errorView: TextView, message: String) {
-        field.setBackgroundResource(R.drawable.error_border) // Destaque em vermelho
+        val redColor = ContextCompat.getColor(this, android.R.color.holo_red_dark)
+        field.backgroundTintList = ColorStateList.valueOf(redColor) // Define o contorno vermelho
         errorView.text = message
         errorView.visibility = View.VISIBLE
     }
 
     private fun hideValidationError(field: EditText, errorView: TextView) {
-        field.setBackgroundResource(0) // Remove o destaque
+        val defaultColor = ContextCompat.getColor(this, android.R.color.darker_gray)
+        field.backgroundTintList = ColorStateList.valueOf(defaultColor) // Restaura a cor padrão
         errorView.visibility = View.GONE
     }
 
@@ -200,6 +220,17 @@ class SignInActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
+    }
+
+    private fun clearFields() {
+        // Limpa campos de texto e mensagens de erro
+        editTextName.text.clear()
+        editTextEmail.text.clear()
+        editTextPassword.text.clear()
+        hideValidationError(editTextName, errorName)
+        hideValidationError(editTextEmail, errorEmail)
+        hideValidationError(editTextPassword, errorPassword)
+        loginErrorMessage.visibility = View.GONE
     }
 
     private fun signInWithGoogle() {
