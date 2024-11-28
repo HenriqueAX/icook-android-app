@@ -27,6 +27,17 @@
         android:layout_below="@id/textInfo"
         android:layout_marginTop="16dp" />
 
+    <!-- Mensagem de erro do nome -->
+    <TextView
+        android:id="@+id/errorName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_red_dark"
+        android:visibility="gone"
+        android:text="Erro no nome"
+        android:layout_below="@id/editTextName"
+        android:layout_marginTop="4dp" />
+
     <!-- Campo de E-mail -->
     <EditText
         android:id="@+id/editTextEmail"
@@ -34,8 +45,19 @@
         android:layout_height="wrap_content"
         android:hint="E-mail"
         android:inputType="textEmailAddress"
-        android:layout_below="@id/editTextName"
+        android:layout_below="@id/errorName"
         android:layout_marginTop="16dp" />
+
+    <!-- Mensagem de erro do e-mail -->
+    <TextView
+        android:id="@+id/errorEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_red_dark"
+        android:visibility="gone"
+        android:text="Erro no e-mail"
+        android:layout_below="@id/editTextEmail"
+        android:layout_marginTop="4dp" />
 
     <!-- Campo de Senha -->
     <EditText
@@ -44,15 +66,37 @@
         android:layout_height="wrap_content"
         android:hint="Senha"
         android:inputType="textPassword"
-        android:layout_below="@id/editTextEmail"
+        android:layout_below="@id/errorEmail"
         android:layout_marginTop="16dp" />
+
+    <!-- Mensagem de erro da senha -->
+    <TextView
+        android:id="@+id/errorPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_red_dark"
+        android:visibility="gone"
+        android:text="Erro na senha"
+        android:layout_below="@id/editTextPassword"
+        android:layout_marginTop="4dp" />
+
+    <!-- Mensagem de erro de login -->
+    <TextView
+        android:id="@+id/loginErrorMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_red_dark"
+        android:visibility="gone"
+        android:text="Erro no login"
+        android:layout_below="@id/editTextPassword"
+        android:layout_marginTop="4dp" />
 
     <!-- Botões para login -->
     <LinearLayout
         android:id="@+id/loginButtonsContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editTextPassword"
+        android:layout_below="@id/loginErrorMessage"
         android:layout_marginTop="16dp"
         android:orientation="vertical">
 
@@ -108,7 +152,7 @@
         android:id="@+id/registerButtonsContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editTextPassword"
+        android:layout_below="@id/errorPassword"
         android:layout_marginTop="16dp"
         android:visibility="gone"
         android:orientation="vertical">
