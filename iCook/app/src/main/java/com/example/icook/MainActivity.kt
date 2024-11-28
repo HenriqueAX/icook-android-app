@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
             // Aguarda 3 segundos e navega para a próxima tela
             Handler(Looper.getMainLooper()).postDelayed({
-                navigateToSearchRecipeActivity()
+                navigateToSearchRecipeActivity(userName)
             }, 3000)
         } else {
             textViewName.text = "Erro ao carregar o usuário" // Exibe mensagem de erro caso o nome seja nulo
@@ -63,9 +63,10 @@ class MainActivity : AppCompatActivity() {
         // Função responsável por adicionar receitas padrão ao banco de dados
     }
 
-    private fun navigateToSearchRecipeActivity() {
-        // Redireciona para a tela de busca de receitas
+    private fun navigateToSearchRecipeActivity(userName: String) {
+        // Redireciona para a tela de busca de receitas com o nome do usuário
         val intent = Intent(this, SearchRecipeActivity::class.java)
+        intent.putExtra("USER_NAME", userName) // Passa o nome do usuário para a próxima Activity
         startActivity(intent)
         finish()
     }
