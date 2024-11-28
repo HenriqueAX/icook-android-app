@@ -1,13 +1,11 @@
+<!-- res/drawable/button_ripple_background.xml -->
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
     android:color="@android:color/darker_gray"> <!-- Cor do efeito ripple -->
 
-    <!-- Fundo do botão com borda arredondada e outras propriedades -->
     <item>
         <shape xmlns:android="http://schemas.android.com/apk/res/android">
-            <solid android:color="@android:color/white" /> <!-- Cor do item -->
-            <corners android:radius="8dp" /> <!-- Borda arredondada -->
-            <stroke android:width="1dp" android:color="#616569" /> <!-- Borda do item -->
-            <shadowColor android:color="#66000000" /> <!-- Cor da sombra -->
+            <solid android:color="@color/blue" /> <!-- Cor do fundo do botão (cor azul do Google) -->
+            <corners android:radius="25dp" /> <!-- Borda arredondada -->
             <padding
                 android:left="12dp"
                 android:top="4dp"
