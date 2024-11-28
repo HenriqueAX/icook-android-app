@@ -19,15 +19,15 @@ import com.google.firebase.auth.FirebaseAuth
 // Activity responsável pela busca de receitas
 class SearchRecipeActivity : AppCompatActivity() {
 
-    private lateinit var recipeRecyclerView: RecyclerView // RecyclerView para receitas
-    private lateinit var btnSearch: Button // Botão de busca
-    private lateinit var searchField: EditText // Campo de texto para busca
-    private lateinit var userNameTextView: TextView // TextView para o nome do usuário
-    private lateinit var dbHelper: DatabaseHelper // Helper para acessar o banco de dados
-    private lateinit var recipeAdapter: RecipeAdapter // Adaptador do RecyclerView
-    private lateinit var mGoogleSignInClient: GoogleSignInClient // Cliente de login do Google
-    private var allRecipes = listOf<Recipe>() // Lista completa de receitas
-    private var filteredRecipes = listOf<Recipe>() // Lista filtrada de receitas
+    private lateinit var recipeRecyclerView: RecyclerView
+    private lateinit var btnSearch: Button
+    private lateinit var searchField: EditText
+    private lateinit var userNameTextView: TextView
+    private lateinit var dbHelper: DatabaseHelper
+    private lateinit var recipeAdapter: RecipeAdapter
+    private lateinit var mGoogleSignInClient: GoogleSignInClient
+    private var allRecipes = listOf<Recipe>()
+    private var filteredRecipes = listOf<Recipe>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,8 +64,9 @@ class SearchRecipeActivity : AppCompatActivity() {
         searchField.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                filterRecipes(s.toString()) // Atualiza a lista filtrada em tempo real
+                filterRecipes(s.toString())
             }
+
             override fun afterTextChanged(s: Editable?) {}
         })
 
@@ -73,7 +74,7 @@ class SearchRecipeActivity : AppCompatActivity() {
         val btnAddRecipe = findViewById<ImageButton>(R.id.btnAddRecipe)
         btnAddRecipe.setOnClickListener {
             val intent = Intent(this, AddRecipeActivity::class.java)
-            startActivityForResult(intent, 100) // Inicia a Activity para adicionar receitas
+            startActivityForResult(intent, 100)
         }
 
         // Configura o botão de logout para deslogar o usuário
@@ -86,7 +87,6 @@ class SearchRecipeActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         recipeRecyclerView.layoutManager = LinearLayoutManager(this)
         recipeAdapter = RecipeAdapter(this, filteredRecipes) { recipe ->
-            // Navega para a tela de detalhes da receita ao clicar em um item
             val intent = Intent(this, RecipeDetailActivity::class.java)
             intent.putExtra("RECIPE", recipe)
             startActivity(intent)
