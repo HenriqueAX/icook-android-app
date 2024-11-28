@@ -100,7 +100,7 @@
         android:layout_marginTop="16dp"
         android:orientation="vertical">
 
-        <!-- Botão de Login com o fundo personalizado -->
+        <!-- Botão de Login com o fundo personalizado --> 
         <Button
             android:id="@+id/buttonLogin"
             android:layout_width="250dp"
