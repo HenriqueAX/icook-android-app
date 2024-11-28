@@ -2,20 +2,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- ScrollView para permitir rolagem quando o conteúdo exceder a tela -->
+    <!-- ScrollView: Permite rolar o conteúdo caso o tamanho do conteúdo ultrapasse a altura da tela -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/actionButtonsLayout">
 
-        <!-- LinearLayout vertical para organizar os campos de entrada e o botão de adicionar receita -->
+        <!-- LinearLayout para organizar os campos de entrada e o botão de adicionar receita -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Título para o campo do nome da receita -->
+            <!-- Texto e campo para o nome da receita -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -24,7 +24,6 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="4dp" />
 
-            <!-- Campo de texto para o nome da receita -->
             <EditText
                 android:id="@+id/etRecipeName"
                 android:layout_width="match_parent"
@@ -32,7 +31,7 @@
                 android:hint="Nome da Receita"
                 android:inputType="textCapWords|textPersonName" />
 
-            <!-- Título para o campo do tempo de preparo -->
+            <!-- Texto e campo para o tempo de preparo da receita -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -42,7 +41,6 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="4dp" />
 
-            <!-- Campo de texto para o tempo de preparo da receita -->
             <EditText
                 android:id="@+id/etPrepTime"
                 android:layout_width="match_parent"
@@ -50,7 +48,7 @@
                 android:hint="Tempo de Preparo (Em minutos)"
                 android:inputType="number" />
 
-            <!-- Título para o campo de avaliação -->
+            <!-- Texto e campo para a avaliação da receita -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -60,7 +58,6 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="4dp" />
 
-            <!-- Campo de texto para a avaliação da receita -->
             <EditText
                 android:id="@+id/etRating"
                 android:layout_width="match_parent"
@@ -68,7 +65,7 @@
                 android:hint="Avaliação (1 a 5)"
                 android:inputType="number" />
 
-            <!-- Título para o campo dos ingredientes -->
+            <!-- Texto e campo para os ingredientes da receita -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -78,7 +75,6 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="4dp" />
 
-            <!-- Campo de texto para os ingredientes da receita -->
             <EditText
                 android:id="@+id/etIngredients"
                 android:layout_width="match_parent"
@@ -88,7 +84,7 @@
                 android:minLines="2"
                 android:gravity="top" />
 
-            <!-- Título para o campo das instruções -->
+            <!-- Texto e campo para as instruções de preparo da receita -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -98,7 +94,6 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="4dp" />
 
-            <!-- Campo de texto para as instruções de preparo da receita -->
             <EditText
                 android:id="@+id/etInstructions"
                 android:layout_width="match_parent"
@@ -108,7 +103,7 @@
                 android:minLines="3"
                 android:gravity="top" />
 
-            <!-- Campo de imagem para adicionar uma imagem à receita -->
+            <!-- Imagem para adicionar uma imagem à receita -->
             <ImageView
                 android:id="@+id/imgRecipe"
                 android:layout_width="match_parent"
@@ -120,18 +115,22 @@
                 android:layout_marginBottom="16dp"
                 android:layout_height="100dp" />
 
-            <!-- Botão para adicionar a receita -->
+            <!-- Botão para adicionar a receita com o estilo do button_background -->
             <Button
                 android:id="@+id/btnAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Adicionar Receita"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp"
+                android:background="@drawable/button_background"
+                android:textColor="#FFFFFF"
+                android:fontFamily="sans-serif-medium"
+                android:elevation="4dp" />
         </LinearLayout>
     </ScrollView>
 
-    <!-- LinearLayout horizontal fixado na parte inferior para os botões de ação -->
+    <!-- LinearLayout fixo na parte inferior da tela com os botões de ação -->
     <LinearLayout
         android:id="@+id/actionButtonsLayout"
         android:layout_width="match_parent"
@@ -152,7 +151,7 @@
             android:background="?attr/selectableItemBackground"
             android:scaleType="fitCenter" />
 
-        <!-- Botão para adicionar uma nova receita -->
+        <!-- Botão para adicionar nova receita -->
         <ImageButton
             android:id="@+id/btnAddRecipe"
             android:layout_width="0dp"

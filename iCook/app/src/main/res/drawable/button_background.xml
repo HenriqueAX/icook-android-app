@@ -4,7 +4,7 @@
     <!-- Fundo do botão com borda arredondada -->
     <item>
         <shape xmlns:android="http://schemas.android.com/apk/res/android">
-            <solid android:color="#757575" /> <!-- Cor do botão -->
+            <solid android:color="#616569" /> <!-- Cor do botão -->
             <corners android:radius="16dp" /> <!-- Borda arredondada -->
             <padding
                 android:left="12dp"

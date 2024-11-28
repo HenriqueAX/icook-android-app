@@ -100,7 +100,7 @@
         android:layout_marginTop="16dp"
         android:orientation="vertical">
 
-        <!-- Botão de Login -->
+        <!-- Botão de Login com o fundo personalizado -->
         <Button
             android:id="@+id/buttonLogin"
             android:layout_width="match_parent"
@@ -111,7 +111,7 @@
             android:fontFamily="sans-serif-medium"
             android:elevation="4dp" />
 
-        <!-- Botão de Cadastro -->
+        <!-- Botão de Cadastro com o fundo personalizado -->
         <Button
             android:id="@+id/buttonRegister"
             android:layout_width="match_parent"
@@ -171,9 +171,13 @@
             android:id="@+id/buttonSubmitRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Cadastrar" />
+            android:text="Cadastrar"
+            android:background="@drawable/button_background"
+            android:textColor="#FFFFFF"
+            android:fontFamily="sans-serif-medium"
+            android:elevation="4dp" />
 
-        <!-- Botão de Voltar -->
+        <!-- Botão de Voltar com o fundo personalizado -->
         <Button
             android:id="@+id/buttonBack"
             android:layout_width="match_parent"
