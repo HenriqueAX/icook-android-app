@@ -19,8 +19,13 @@ class SignInActivity : AppCompatActivity() {
     private lateinit var editTextName: EditText
     private lateinit var editTextEmail: EditText
     private lateinit var editTextPassword: EditText
+    private lateinit var loginButtonsContainer: LinearLayout
+    private lateinit var registerButtonsContainer: LinearLayout
+    private lateinit var googleButtonContainer: LinearLayout
     private lateinit var buttonLogin: Button
     private lateinit var buttonRegister: Button
+    private lateinit var buttonSubmitRegister: Button
+    private lateinit var buttonBack: Button
     private lateinit var signInButton: Button
     private lateinit var textInfo: TextView
 
@@ -36,8 +41,13 @@ class SignInActivity : AppCompatActivity() {
         editTextName = findViewById(R.id.editTextName)
         editTextEmail = findViewById(R.id.editTextEmail)
         editTextPassword = findViewById(R.id.editTextPassword)
+        loginButtonsContainer = findViewById(R.id.loginButtonsContainer)
+        registerButtonsContainer = findViewById(R.id.registerButtonsContainer)
+        googleButtonContainer = findViewById(R.id.googleButtonContainer)
         buttonLogin = findViewById(R.id.buttonLogin)
         buttonRegister = findViewById(R.id.buttonRegister)
+        buttonSubmitRegister = findViewById(R.id.buttonSubmitRegister)
+        buttonBack = findViewById(R.id.buttonBack)
         signInButton = findViewById(R.id.signInButton)
         textInfo = findViewById(R.id.textInfo)
 
@@ -50,11 +60,15 @@ class SignInActivity : AppCompatActivity() {
         }
 
         buttonRegister.setOnClickListener {
-            if (isRegisterMode) {
-                performRegistration()
-            } else {
-                switchToRegisterMode()
-            }
+            switchToRegisterMode()
+        }
+
+        buttonSubmitRegister.setOnClickListener {
+            performRegistration()
+        }
+
+        buttonBack.setOnClickListener {
+            switchToLoginMode()
         }
 
         signInButton.setOnClickListener {
@@ -65,16 +79,18 @@ class SignInActivity : AppCompatActivity() {
     private fun switchToRegisterMode() {
         isRegisterMode = true
         editTextName.visibility = View.VISIBLE
-        buttonRegister.text = "Cadastrar"
-        buttonLogin.text = "Voltar"
+        loginButtonsContainer.visibility = View.GONE
+        registerButtonsContainer.visibility = View.VISIBLE
+        googleButtonContainer.visibility = View.GONE // Oculta o botão do Google no modo de cadastro
         textInfo.text = "Preencha os dados para cadastrar-se"
     }
 
     private fun switchToLoginMode() {
         isRegisterMode = false
         editTextName.visibility = View.GONE
-        buttonLogin.text = "Login"
-        buttonRegister.text = "Cadastrar-se"
+        loginButtonsContainer.visibility = View.VISIBLE
+        registerButtonsContainer.visibility = View.GONE
+        googleButtonContainer.visibility = View.VISIBLE // Mostra o botão do Google no modo de login
         textInfo.text = "Faça login ou cadastre-se"
     }
 
