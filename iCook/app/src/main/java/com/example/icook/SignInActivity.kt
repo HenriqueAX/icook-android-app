@@ -11,11 +11,13 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 
+// Activity que gerencia login, cadastro e autenticação com Google
 class SignInActivity : AppCompatActivity() {
 
-    private lateinit var auth: FirebaseAuth
-    private lateinit var dbHelper: DatabaseHelper
+    private lateinit var auth: FirebaseAuth // Gerenciador de autenticação Firebase
+    private lateinit var dbHelper: DatabaseHelper // Gerenciador do banco de dados local
 
+    // Componentes da interface do usuário
     private lateinit var editTextName: EditText
     private lateinit var editTextEmail: EditText
     private lateinit var editTextPassword: EditText
@@ -29,15 +31,17 @@ class SignInActivity : AppCompatActivity() {
     private lateinit var signInButton: Button
     private lateinit var textInfo: TextView
 
-    private var isRegisterMode = false
+    private var isRegisterMode = false // Controla se está no modo de cadastro
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
 
+        // Inicializa FirebaseAuth e o banco de dados local
         auth = FirebaseAuth.getInstance()
         dbHelper = DatabaseHelper(this)
 
+        // Liga os componentes da interface às variáveis
         editTextName = findViewById(R.id.editTextName)
         editTextEmail = findViewById(R.id.editTextEmail)
         editTextPassword = findViewById(R.id.editTextPassword)
@@ -51,6 +55,7 @@ class SignInActivity : AppCompatActivity() {
         signInButton = findViewById(R.id.signInButton)
         textInfo = findViewById(R.id.textInfo)
 
+        // Define o comportamento dos botões
         buttonLogin.setOnClickListener {
             if (isRegisterMode) {
                 switchToLoginMode()
@@ -76,24 +81,27 @@ class SignInActivity : AppCompatActivity() {
         }
     }
 
+    // Alterna para o modo de cadastro
     private fun switchToRegisterMode() {
         isRegisterMode = true
         editTextName.visibility = View.VISIBLE
         loginButtonsContainer.visibility = View.GONE
         registerButtonsContainer.visibility = View.VISIBLE
-        googleButtonContainer.visibility = View.GONE // Oculta o botão do Google no modo de cadastro
+        googleButtonContainer.visibility = View.GONE // Oculta o botão do Google no cadastro
         textInfo.text = "Preencha os dados para cadastrar-se"
     }
 
+    // Alterna para o modo de login
     private fun switchToLoginMode() {
         isRegisterMode = false
         editTextName.visibility = View.GONE
         loginButtonsContainer.visibility = View.VISIBLE
         registerButtonsContainer.visibility = View.GONE
-        googleButtonContainer.visibility = View.VISIBLE // Mostra o botão do Google no modo de login
+        googleButtonContainer.visibility = View.VISIBLE // Mostra o botão do Google no login
         textInfo.text = "Faça login ou cadastre-se"
     }
 
+    // Realiza login local com e-mail e senha
     private fun performLogin() {
         val email = editTextEmail.text.toString()
         val password = editTextPassword.text.toString()
@@ -112,6 +120,7 @@ class SignInActivity : AppCompatActivity() {
         }
     }
 
+    // Realiza o cadastro de um novo usuário
     private fun performRegistration() {
         val name = editTextName.text.toString()
         val email = editTextEmail.text.toString()
@@ -133,6 +142,7 @@ class SignInActivity : AppCompatActivity() {
         }
     }
 
+    // Realiza o login com Google
     private fun signInWithGoogle() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -144,6 +154,7 @@ class SignInActivity : AppCompatActivity() {
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
+    // Gerencia o resultado do login com Google
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -158,6 +169,7 @@ class SignInActivity : AppCompatActivity() {
         }
     }
 
+    // Autenticação com Google via Firebase
     private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
@@ -171,6 +183,7 @@ class SignInActivity : AppCompatActivity() {
             }
     }
 
+    // Redireciona para a MainActivity após login bem-sucedido
     private fun navigateToMainActivity(userName: String) {
         val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("USER_NAME", userName)

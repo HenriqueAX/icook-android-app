@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,7 @@ class SearchRecipeActivity : AppCompatActivity() {
     private lateinit var recipeRecyclerView: RecyclerView // RecyclerView para receitas
     private lateinit var btnSearch: Button // Botão de busca
     private lateinit var searchField: EditText // Campo de texto para busca
+    private lateinit var userNameTextView: TextView // TextView para o nome do usuário
     private lateinit var dbHelper: DatabaseHelper // Helper para acessar o banco de dados
     private lateinit var recipeAdapter: RecipeAdapter // Adaptador do RecyclerView
     private lateinit var mGoogleSignInClient: GoogleSignInClient // Cliente de login do Google
@@ -35,7 +37,12 @@ class SearchRecipeActivity : AppCompatActivity() {
         recipeRecyclerView = findViewById(R.id.recipeRecyclerView)
         btnSearch = findViewById(R.id.btnSearch)
         searchField = findViewById(R.id.searchField)
+        userNameTextView = findViewById(R.id.userNameTextView)
         val btnLogout = findViewById<Button>(R.id.logout_button)
+
+        // Recebe o nome do usuário passado pelo Intent
+        val userName = intent.getStringExtra("USER_NAME") ?: "Usuário"
+        userNameTextView.text = "Bem-vindo, $userName"
 
         // Carrega todas as receitas do banco de dados
         dbHelper = DatabaseHelper(this)
@@ -97,13 +104,11 @@ class SearchRecipeActivity : AppCompatActivity() {
 
     // Filtra receitas com base na consulta de texto
     private fun filterRecipes(query: String) {
-        // Filtra as receitas com base no texto digitado
         filteredRecipes = if (query.isEmpty()) {
-            allRecipes // Retorna todas as receitas se a consulta estiver vazia
+            allRecipes
         } else {
-            allRecipes.filter { it.name.contains(query, ignoreCase = true) } // Filtra receitas por nome
+            allRecipes.filter { it.name.contains(query, ignoreCase = true) }
         }
-        // Atualiza o adaptador com a lista filtrada
         recipeAdapter = RecipeAdapter(this, filteredRecipes) { recipe ->
             val intent = Intent(this, RecipeDetailActivity::class.java)
             intent.putExtra("RECIPE", recipe)
@@ -118,7 +123,7 @@ class SearchRecipeActivity : AppCompatActivity() {
         mGoogleSignInClient.signOut().addOnCompleteListener {
             val intent = Intent(this, SignInActivity::class.java)
             startActivity(intent)
-            finish() // Finaliza a Activity atual
+            finish()
         }
     }
 
@@ -126,8 +131,8 @@ class SearchRecipeActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 100 && resultCode == RESULT_OK) {
-            allRecipes = dbHelper.getAllRecipes() // Recarrega as receitas
-            filterRecipes(searchField.text.toString()) // Aplica o filtro novamente
+            allRecipes = dbHelper.getAllRecipes()
+            filterRecipes(searchField.text.toString())
         }
     }
 }
