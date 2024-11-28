@@ -1,30 +1,108 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
     tools:context=".SignInActivity">
 
-    <!-- Texto acima do botão -->
+    <!-- Texto acima dos campos -->
     <TextView
         android:id="@+id/textInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Faça o login"
-        android:textSize="30dp"
+        android:text="Faça login ou cadastre-se"
+        android:textSize="30sp"
         android:textColor="@android:color/black"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="50dp"
         android:gravity="center" />
 
-    <!-- Container do botão de login -->
+    <!-- Campo de Nome (visível apenas no cadastro) -->
+    <EditText
+        android:id="@+id/editTextName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nome"
+        android:visibility="gone"
+        android:layout_below="@id/textInfo"
+        android:layout_marginTop="16dp" />
+
+    <!-- Campo de E-mail -->
+    <EditText
+        android:id="@+id/editTextEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="E-mail"
+        android:inputType="textEmailAddress"
+        android:layout_below="@id/editTextName"
+        android:layout_marginTop="16dp" />
+
+    <!-- Campo de Senha -->
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Senha"
+        android:inputType="textPassword"
+        android:layout_below="@id/editTextEmail"
+        android:layout_marginTop="16dp" />
+
+    <!-- Botões para login -->
     <LinearLayout
-        android:layout_centerInParent="true"
-        android:layout_marginTop="50dp"
+        android:id="@+id/loginButtonsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextPassword"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical">
+
+        <!-- Botão de Login -->
+        <Button
+            android:id="@+id/buttonLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Login" />
+
+        <!-- Botão de Cadastrar-se -->
+        <Button
+            android:id="@+id/buttonRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cadastrar-se"
+            android:layout_marginTop="8dp" />
+    </LinearLayout>
+
+    <!-- Botões para cadastro -->
+    <LinearLayout
+        android:id="@+id/registerButtonsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextPassword"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <!-- Botão de Cadastrar -->
+        <Button
+            android:id="@+id/buttonSubmitRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cadastrar" />
+
+        <!-- Botão de Voltar -->
+        <Button
+            android:id="@+id/buttonBack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Voltar"
+            android:layout_marginTop="8dp" />
+    </LinearLayout>
+
+    <!-- Container do botão de login com Google -->
+    <LinearLayout
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/loginButtonsContainer"
+        android:layout_marginTop="24dp"
         android:background="@drawable/border"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -32,8 +110,6 @@
         <ImageView
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:layout_marginLeft="11dp"
             android:layout_marginRight="11dp"
@@ -46,9 +122,8 @@
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:background="@color/blue"
-            android:text="Sign up with Google"
+            android:text="Login com Google"
             android:textColor="@color/white"
             android:textSize="20sp" />
     </LinearLayout>
-
 </RelativeLayout>

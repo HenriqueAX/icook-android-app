@@ -9,9 +9,10 @@ import android.database.sqlite.SQLiteOpenHelper
 class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
-        // Definições do banco de dados
         private const val DATABASE_NAME = "icook.db"
         private const val DATABASE_VERSION = 2
+
+        // Tabela de receitas
         private const val TABLE_RECIPES = "recipes"
         private const val COLUMN_ID = "id"
         private const val COLUMN_NAME = "name"
@@ -21,11 +22,17 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         private const val COLUMN_INSTRUCTIONS = "instructions"
         private const val COLUMN_IMAGE_RES_ID = "image_res_id"
         private const val COLUMN_IMAGE_URI = "image_uri"
+
+        // Tabela de usuários
+        private const val TABLE_USERS = "users"
+        private const val COLUMN_USER_ID = "id"
+        private const val COLUMN_USER_NAME = "name"
+        private const val COLUMN_USER_EMAIL = "email"
+        private const val COLUMN_USER_PASSWORD = "password"
     }
 
-    // Criação da tabela no banco de dados
     override fun onCreate(db: SQLiteDatabase?) {
-        val createTable = ("CREATE TABLE $TABLE_RECIPES ("
+        val createRecipesTable = ("CREATE TABLE $TABLE_RECIPES ("
                 + "$COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "$COLUMN_NAME TEXT,"
                 + "$COLUMN_PREP_TIME INTEGER,"
@@ -35,18 +42,23 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 + "$COLUMN_IMAGE_RES_ID INTEGER,"
                 + "$COLUMN_IMAGE_URI TEXT"
                 + ")")
-        db?.execSQL(createTable) // Executa a criação da tabela no banco
+        db?.execSQL(createRecipesTable)
+
+        val createUsersTable = ("CREATE TABLE $TABLE_USERS ("
+                + "$COLUMN_USER_ID INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "$COLUMN_USER_NAME TEXT,"
+                + "$COLUMN_USER_EMAIL TEXT UNIQUE,"
+                + "$COLUMN_USER_PASSWORD TEXT"
+                + ")")
+        db?.execSQL(createUsersTable)
     }
 
-    // Atualização do banco de dados em caso de mudança de versão
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         if (oldVersion < 2) {
-            // Adiciona a coluna de URI de imagem caso a versão seja atualizada
             db?.execSQL("ALTER TABLE $TABLE_RECIPES ADD COLUMN $COLUMN_IMAGE_URI TEXT")
         }
     }
 
-    // Adiciona uma receita no banco de dados
     fun addRecipe(recipe: Recipe) {
         val db = this.writableDatabase
         val values = ContentValues().apply {
@@ -59,10 +71,9 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             put(COLUMN_IMAGE_URI, recipe.imageUri)
         }
         db.insert(TABLE_RECIPES, null, values)
-        db.close() // Fecha a conexão após a inserção
+        db.close()
     }
 
-    // Recupera todas as receitas do banco de dados
     fun getAllRecipes(): List<Recipe> {
         val recipeList = mutableListOf<Recipe>()
         val db = this.readableDatabase
@@ -70,7 +81,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
         if (cursor.moveToFirst()) {
             do {
-                // Lê as informações de cada receita armazenada no banco de dados
                 val id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID))
                 val name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME))
                 val prepTime = cursor.getInt(cursor.getColumnIndex(COLUMN_PREP_TIME))
@@ -80,7 +90,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 val imageResId = cursor.getInt(cursor.getColumnIndex(COLUMN_IMAGE_RES_ID))
                 val imageUri = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI))
 
-                // Cria e adiciona a receita à lista
                 val recipe = Recipe(
                     id = id,
                     name = name,
@@ -92,10 +101,51 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                     imageUri = imageUri
                 )
                 recipeList.add(recipe)
-            } while (cursor.moveToNext()) // Percorre todas as receitas armazenadas
+            } while (cursor.moveToNext())
         }
-        cursor.close() // Fecha o cursor após a consulta
-        db.close() // Fecha a conexão com o banco de dados
-        return recipeList // Retorna a lista de receitas
+        cursor.close()
+        db.close()
+        return recipeList
+    }
+
+    fun addUser(user: User): Boolean {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_USER_NAME, user.name)
+            put(COLUMN_USER_EMAIL, user.email)
+            put(COLUMN_USER_PASSWORD, user.password)
+        }
+
+        val result = db.insert(TABLE_USERS, null, values)
+        db.close()
+
+        return result != -1L
+    }
+
+    fun getUserByEmail(email: String): User? {
+        val db = this.readableDatabase
+        val cursor = db.query(
+            TABLE_USERS,
+            arrayOf(COLUMN_USER_ID, COLUMN_USER_NAME, COLUMN_USER_EMAIL, COLUMN_USER_PASSWORD),
+            "$COLUMN_USER_EMAIL = ?",
+            arrayOf(email),
+            null,
+            null,
+            null
+        )
+
+        var user: User? = null
+        if (cursor.moveToFirst()) {
+            val id = cursor.getInt(cursor.getColumnIndex(COLUMN_USER_ID))
+            val name = cursor.getString(cursor.getColumnIndex(COLUMN_USER_NAME))
+            val userEmail = cursor.getString(cursor.getColumnIndex(COLUMN_USER_EMAIL))
+            val password = cursor.getString(cursor.getColumnIndex(COLUMN_USER_PASSWORD))
+
+            user = User(id, name, userEmail, password)
+        }
+
+        cursor.close()
+        db.close()
+        return user
     }
 }
