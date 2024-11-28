@@ -15,6 +15,15 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <!-- Título para o campo do nome da receita -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Título da Receita"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="4dp" />
+
             <!-- Campo de texto para o nome da receita -->
             <EditText
                 android:id="@+id/etRecipeName"
@@ -23,13 +32,33 @@
                 android:hint="Nome da Receita"
                 android:inputType="textCapWords|textPersonName" />
 
+            <!-- Título para o campo do tempo de preparo -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tempo de Preparo"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="4dp" />
+
             <!-- Campo de texto para o tempo de preparo da receita -->
             <EditText
                 android:id="@+id/etPrepTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Tempo de Preparo (em minutos)"
+                android:hint="Tempo de Preparo (Em minutos)"
                 android:inputType="number" />
+
+            <!-- Título para o campo de avaliação -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Avaliação"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="4dp" />
 
             <!-- Campo de texto para a avaliação da receita -->
             <EditText
@@ -39,15 +68,35 @@
                 android:hint="Avaliação (1 a 5)"
                 android:inputType="number" />
 
+            <!-- Título para o campo dos ingredientes -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ingredientes"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="4dp" />
+
             <!-- Campo de texto para os ingredientes da receita -->
             <EditText
                 android:id="@+id/etIngredients"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Ingredientes (separados por vírgulas)"
+                android:hint="Ingredientes (Separados por linha)"
                 android:inputType="textMultiLine|textCapSentences"
                 android:minLines="2"
                 android:gravity="top" />
+
+            <!-- Título para o campo das instruções -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Modo de Preparo"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="4dp" />
 
             <!-- Campo de texto para as instruções de preparo da receita -->
             <EditText
@@ -63,7 +112,7 @@
             <ImageView
                 android:id="@+id/imgRecipe"
                 android:layout_width="match_parent"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_add_image"
                 android:contentDescription="Adicionar imagem da Receita"
