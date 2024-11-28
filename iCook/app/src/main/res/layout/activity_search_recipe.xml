@@ -26,8 +26,12 @@
         <Button
             android:id="@+id/logout_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Logout" />
+            android:layout_height="40dp"
+            android:text="Logout"
+            android:background="@drawable/button_background"
+            android:textColor="#FFFFFF"
+            android:fontFamily="sans-serif-medium"
+            android:elevation="4dp" />
     </LinearLayout>
 
     <!-- Campo de entrada para texto de busca -->
@@ -41,9 +45,14 @@
     <Button
         android:id="@+id/btnSearch"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:text="Buscar"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="8dp"
+        android:background="@drawable/button_background"
+        android:textColor="#FFFFFF"
+        android:fontFamily="sans-serif-medium"
+        android:elevation="4dp"
+        android:layout_marginBottom="8dp"/>
 
     <!-- RecyclerView para exibir a lista de receitas -->
     <androidx.recyclerview.widget.RecyclerView
@@ -57,7 +66,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_marginTop="8dp">
 
         <!-- Botão com ícone de busca -->
         <ImageButton

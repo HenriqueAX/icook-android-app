@@ -5,7 +5,7 @@
     android:padding="16dp"
     tools:context=".SignInActivity">
 
-    <!-- Texto acima dos campos -->
+    <!-- Texto de introdução para o login ou cadastro -->
     <TextView
         android:id="@+id/textInfo"
         android:layout_width="wrap_content"
@@ -17,7 +17,7 @@
         android:layout_marginTop="50dp"
         android:gravity="center" />
 
-    <!-- Campo de Nome (visível apenas no cadastro) -->
+    <!-- Campo de nome (visível apenas no cadastro) -->
     <EditText
         android:id="@+id/editTextName"
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
         android:layout_below="@id/textInfo"
         android:layout_marginTop="16dp" />
 
-    <!-- Mensagem de erro do nome -->
+    <!-- Mensagem de erro caso o nome seja inválido -->
     <TextView
         android:id="@+id/errorName"
         android:layout_width="match_parent"
@@ -38,7 +38,7 @@
         android:layout_below="@id/editTextName"
         android:layout_marginTop="4dp" />
 
-    <!-- Campo de E-mail -->
+    <!-- Campo de e-mail -->
     <EditText
         android:id="@+id/editTextEmail"
         android:layout_width="match_parent"
@@ -48,7 +48,7 @@
         android:layout_below="@id/errorName"
         android:layout_marginTop="16dp" />
 
-    <!-- Mensagem de erro do e-mail -->
+    <!-- Mensagem de erro caso o e-mail seja inválido -->
     <TextView
         android:id="@+id/errorEmail"
         android:layout_width="match_parent"
@@ -59,7 +59,7 @@
         android:layout_below="@id/editTextEmail"
         android:layout_marginTop="4dp" />
 
-    <!-- Campo de Senha -->
+    <!-- Campo de senha -->
     <EditText
         android:id="@+id/editTextPassword"
         android:layout_width="match_parent"
@@ -69,7 +69,7 @@
         android:layout_below="@id/errorEmail"
         android:layout_marginTop="16dp" />
 
-    <!-- Mensagem de erro da senha -->
+    <!-- Mensagem de erro caso a senha seja inválida -->
     <TextView
         android:id="@+id/errorPassword"
         android:layout_width="match_parent"
@@ -80,7 +80,7 @@
         android:layout_below="@id/editTextPassword"
         android:layout_marginTop="4dp" />
 
-    <!-- Mensagem de erro de login -->
+    <!-- Mensagem de erro geral de login -->
     <TextView
         android:id="@+id/loginErrorMessage"
         android:layout_width="match_parent"
@@ -91,7 +91,7 @@
         android:layout_below="@id/editTextPassword"
         android:layout_marginTop="4dp" />
 
-    <!-- Botões para login -->
+    <!-- Container dos botões de login e cadastro -->
     <LinearLayout
         android:id="@+id/loginButtonsContainer"
         android:layout_width="match_parent"
@@ -105,18 +105,26 @@
             android:id="@+id/buttonLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login" />
+            android:text="Login"
+            android:background="@drawable/button_background"
+            android:textColor="#FFFFFF"
+            android:fontFamily="sans-serif-medium"
+            android:elevation="4dp" />
 
-        <!-- Botão de Cadastrar-se -->
+        <!-- Botão de Cadastro -->
         <Button
             android:id="@+id/buttonRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Cadastrar-se"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"
+            android:background="@drawable/button_background"
+            android:textColor="#FFFFFF"
+            android:fontFamily="sans-serif-medium"
+            android:elevation="4dp" />
     </LinearLayout>
 
-    <!-- Botão de Login com Google -->
+    <!-- Container para o botão de login com Google -->
     <LinearLayout
         android:id="@+id/googleButtonContainer"
         android:layout_width="wrap_content"
@@ -136,6 +144,7 @@
             android:background="@color/white"
             android:src="@drawable/google" />
 
+        <!-- Botão de login com Google -->
         <Button
             android:id="@+id/signInButton"
             android:textAllCaps="false"
@@ -147,7 +156,7 @@
             android:textSize="20sp" />
     </LinearLayout>
 
-    <!-- Botões para cadastro -->
+    <!-- Container para os botões de cadastro -->
     <LinearLayout
         android:id="@+id/registerButtonsContainer"
         android:layout_width="match_parent"
@@ -157,7 +166,7 @@
         android:visibility="gone"
         android:orientation="vertical">
 
-        <!-- Botão de Cadastrar -->
+        <!-- Botão para enviar o cadastro -->
         <Button
             android:id="@+id/buttonSubmitRegister"
             android:layout_width="match_parent"
@@ -170,6 +179,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Voltar"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"
+            android:background="@drawable/button_background"
+            android:textColor="#FFFFFF"
+            android:fontFamily="sans-serif-medium"
+            android:elevation="4dp" />
     </LinearLayout>
 </RelativeLayout>
