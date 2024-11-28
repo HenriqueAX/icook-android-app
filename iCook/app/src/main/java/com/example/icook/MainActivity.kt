@@ -15,9 +15,11 @@ import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
 
+    // Variáveis para autenticação e interface do usuário
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var mAuth: FirebaseAuth
 
+    // Componentes de interface e banco de dados
     private lateinit var textViewName: TextView
     private lateinit var progressBar: ProgressBar
     private lateinit var dbHelper: DatabaseHelper
@@ -26,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Inicializa o FirebaseAuth e o cliente de login do Google
+        // Configura FirebaseAuth e o cliente de login com Google
         mAuth = FirebaseAuth.getInstance()
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -34,31 +36,33 @@ class MainActivity : AppCompatActivity() {
             .build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        // Liga componentes da interface às variáveis
+        // Liga os componentes visuais ao código e inicializa o helper do banco de dados
         textViewName = findViewById(R.id.name)
         progressBar = findViewById(R.id.progress_bar)
         dbHelper = DatabaseHelper(this)
 
-        // Adiciona receitas padrão ao banco caso ainda não existam
+        // Checa se o banco de dados possui receitas; se não, adiciona receitas padrão
         if (dbHelper.getAllRecipes().isEmpty()) {
             addDefaultRecipes()
         }
 
-        // Exibe o nome do usuário recebido da intent e redireciona para a próxima tela
+        // Obtém o nome do usuário da Intent e configura a interface inicial
         val userName = intent.getStringExtra("USER_NAME")
         if (userName != null) {
             textViewName.text = "Bem-vindo, $userName"
             progressBar.isVisible = true
 
-            // Aguarda 3 segundos e navega para a próxima tela
+            // Espera 3 segundos e redireciona para a próxima tela
             Handler(Looper.getMainLooper()).postDelayed({
                 navigateToSearchRecipeActivity(userName)
             }, 3000)
         } else {
-            textViewName.text = "Erro ao carregar o usuário" // Exibe mensagem de erro caso o nome seja nulo
+            // Exibe mensagem de erro caso o nome do usuário seja nulo
+            textViewName.text = "Erro ao carregar o usuário"
         }
     }
 
+    // Adiciona receitas padrão ao banco de dados
     private fun addDefaultRecipes() {
         val recipe1 = Recipe(
             id = 1,
@@ -112,10 +116,10 @@ class MainActivity : AppCompatActivity() {
         dbHelper.addRecipe(recipe3)
     }
 
+    // Redireciona para a Activity de busca de receitas, passando o nome do usuário
     private fun navigateToSearchRecipeActivity(userName: String) {
-        // Redireciona para a tela de busca de receitas com o nome do usuário
         val intent = Intent(this, SearchRecipeActivity::class.java)
-        intent.putExtra("USER_NAME", userName) // Passa o nome do usuário para a próxima Activity
+        intent.putExtra("USER_NAME", userName) // Passa dados para a próxima tela
         startActivity(intent)
         finish()
     }
