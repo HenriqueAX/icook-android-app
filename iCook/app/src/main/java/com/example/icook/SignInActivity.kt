@@ -2,23 +2,21 @@ package com.example.icook
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
 
 class SignInActivity : AppCompatActivity() {
 
-    private lateinit var auth: FirebaseAuth
     private lateinit var dbHelper: DatabaseHelper
 
     private lateinit var editTextName: EditText
     private lateinit var editTextEmail: EditText
     private lateinit var editTextPassword: EditText
+    private lateinit var errorName: TextView
+    private lateinit var errorEmail: TextView
+    private lateinit var errorPassword: TextView
     private lateinit var loginButtonsContainer: LinearLayout
     private lateinit var registerButtonsContainer: LinearLayout
     private lateinit var googleButtonContainer: LinearLayout
@@ -35,12 +33,15 @@ class SignInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
 
-        auth = FirebaseAuth.getInstance()
         dbHelper = DatabaseHelper(this)
 
+        // Inicializa os campos de entrada e botões
         editTextName = findViewById(R.id.editTextName)
         editTextEmail = findViewById(R.id.editTextEmail)
         editTextPassword = findViewById(R.id.editTextPassword)
+        errorName = findViewById(R.id.errorName)
+        errorEmail = findViewById(R.id.errorEmail)
+        errorPassword = findViewById(R.id.errorPassword)
         loginButtonsContainer = findViewById(R.id.loginButtonsContainer)
         registerButtonsContainer = findViewById(R.id.registerButtonsContainer)
         googleButtonContainer = findViewById(R.id.googleButtonContainer)
@@ -81,7 +82,7 @@ class SignInActivity : AppCompatActivity() {
         editTextName.visibility = View.VISIBLE
         loginButtonsContainer.visibility = View.GONE
         registerButtonsContainer.visibility = View.VISIBLE
-        googleButtonContainer.visibility = View.GONE // Oculta o botão do Google no modo de cadastro
+        googleButtonContainer.visibility = View.GONE
         textInfo.text = "Preencha os dados para cadastrar-se"
     }
 
@@ -90,7 +91,7 @@ class SignInActivity : AppCompatActivity() {
         editTextName.visibility = View.GONE
         loginButtonsContainer.visibility = View.VISIBLE
         registerButtonsContainer.visibility = View.GONE
-        googleButtonContainer.visibility = View.VISIBLE // Mostra o botão do Google no modo de login
+        googleButtonContainer.visibility = View.VISIBLE
         textInfo.text = "Faça login ou cadastre-se"
     }
 
@@ -99,7 +100,8 @@ class SignInActivity : AppCompatActivity() {
         val password = editTextPassword.text.toString()
 
         if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Por favor, preencha todos os campos", Toast.LENGTH_SHORT).show()
+            showValidationError(editTextEmail, errorEmail, "Preencha todos os campos")
+            showValidationError(editTextPassword, errorPassword, "Preencha todos os campos")
             return
         }
 
@@ -117,10 +119,30 @@ class SignInActivity : AppCompatActivity() {
         val email = editTextEmail.text.toString()
         val password = editTextPassword.text.toString()
 
-        if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Por favor, preencha todos os campos", Toast.LENGTH_SHORT).show()
-            return
+        var isValid = true
+
+        if (name.isEmpty()) {
+            showValidationError(editTextName, errorName, "O nome não pode estar vazio")
+            isValid = false
+        } else {
+            hideValidationError(editTextName, errorName)
         }
+
+        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            showValidationError(editTextEmail, errorEmail, "E-mail inválido")
+            isValid = false
+        } else {
+            hideValidationError(editTextEmail, errorEmail)
+        }
+
+        if (password.length < 5) {
+            showValidationError(editTextPassword, errorPassword, "A senha deve ter no mínimo 5 caracteres")
+            isValid = false
+        } else {
+            hideValidationError(editTextPassword, errorPassword)
+        }
+
+        if (!isValid) return
 
         val newUser = User(0, name, email, password)
         val isAdded = dbHelper.addUser(newUser)
@@ -133,42 +155,19 @@ class SignInActivity : AppCompatActivity() {
         }
     }
 
+    private fun showValidationError(field: EditText, errorView: TextView, message: String) {
+        field.setBackgroundResource(R.drawable.error_border) // Destaque em vermelho
+        errorView.text = message
+        errorView.visibility = View.VISIBLE
+    }
+
+    private fun hideValidationError(field: EditText, errorView: TextView) {
+        field.setBackgroundResource(0) // Remove o destaque
+        errorView.visibility = View.GONE
+    }
+
     private fun signInWithGoogle() {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-
-        val googleSignInClient = GoogleSignIn.getClient(this, gso)
-        val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == RC_SIGN_IN) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                val account = task.getResult(ApiException::class.java)
-                firebaseAuthWithGoogle(account.idToken!!)
-            } catch (e: ApiException) {
-                Toast.makeText(this, "Google sign in failed: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(this, "Login com Google bem-sucedido", Toast.LENGTH_SHORT).show()
-                    navigateToMainActivity(auth.currentUser?.displayName ?: "Usuário")
-                } else {
-                    Toast.makeText(this, "Falha na autenticação", Toast.LENGTH_SHORT).show()
-                }
-            }
+        // Configuração para login com Google
     }
 
     private fun navigateToMainActivity(userName: String) {
@@ -176,9 +175,5 @@ class SignInActivity : AppCompatActivity() {
         intent.putExtra("USER_NAME", userName)
         startActivity(intent)
         finish()
-    }
-
-    companion object {
-        private const val RC_SIGN_IN = 9001
     }
 }
