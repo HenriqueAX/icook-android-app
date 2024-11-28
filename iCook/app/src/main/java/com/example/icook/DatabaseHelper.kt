@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper
 class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
+        // Nome e versão do banco de dados
         private const val DATABASE_NAME = "icook.db"
         private const val DATABASE_VERSION = 2
 
@@ -31,6 +32,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         private const val COLUMN_USER_PASSWORD = "password"
     }
 
+    // Criação inicial das tabelas no banco de dados
     override fun onCreate(db: SQLiteDatabase?) {
         val createRecipesTable = ("CREATE TABLE $TABLE_RECIPES ("
                 + "$COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -53,12 +55,14 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db?.execSQL(createUsersTable)
     }
 
+    // Atualização do banco de dados em caso de mudança de versão
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         if (oldVersion < 2) {
             db?.execSQL("ALTER TABLE $TABLE_RECIPES ADD COLUMN $COLUMN_IMAGE_URI TEXT")
         }
     }
 
+    // Função para adicionar uma receita no banco de dados
     fun addRecipe(recipe: Recipe) {
         val db = this.writableDatabase
         val values = ContentValues().apply {
@@ -74,11 +78,13 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db.close()
     }
 
+    // Função para obter todas as receitas armazenadas
     fun getAllRecipes(): List<Recipe> {
         val recipeList = mutableListOf<Recipe>()
         val db = this.readableDatabase
         val cursor: Cursor = db.rawQuery("SELECT * FROM $TABLE_RECIPES", null)
 
+        // Mapeia os resultados do cursor para objetos Recipe
         if (cursor.moveToFirst()) {
             do {
                 val id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID))
@@ -108,6 +114,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return recipeList
     }
 
+    // Função para adicionar um usuário no banco de dados
     fun addUser(user: User): Boolean {
         val db = this.writableDatabase
         val values = ContentValues().apply {
@@ -119,9 +126,10 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val result = db.insert(TABLE_USERS, null, values)
         db.close()
 
-        return result != -1L
+        return result != -1L // Retorna true se o usuário foi adicionado com sucesso
     }
 
+    // Função para buscar um usuário pelo e-mail
     fun getUserByEmail(email: String): User? {
         val db = this.readableDatabase
         val cursor = db.query(
@@ -135,6 +143,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         )
 
         var user: User? = null
+        // Se o e-mail foi encontrado, cria um objeto User com os dados
         if (cursor.moveToFirst()) {
             val id = cursor.getInt(cursor.getColumnIndex(COLUMN_USER_ID))
             val name = cursor.getString(cursor.getColumnIndex(COLUMN_USER_NAME))
