@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:text="Carregando..."
         android:textSize="30sp"
-        android:textColor="@android:color/black"
+        android:textColor="#616569"
         android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/progress_bar"

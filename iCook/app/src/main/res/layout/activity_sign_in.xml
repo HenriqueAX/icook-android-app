@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="Faça login ou cadastre-se"
         android:textSize="30sp"
-        android:textColor="@android:color/black"
+        android:textColor="#616569"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:gravity="center" />
@@ -103,8 +103,9 @@
         <!-- Botão de Login com o fundo personalizado -->
         <Button
             android:id="@+id/buttonLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
             android:text="Login"
             android:background="@drawable/button_background"
             android:textColor="#FFFFFF"
@@ -114,8 +115,9 @@
         <!-- Botão de Cadastro com o fundo personalizado -->
         <Button
             android:id="@+id/buttonRegister"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
             android:text="Cadastrar-se"
             android:layout_marginTop="8dp"
             android:background="@drawable/button_background"
@@ -171,8 +173,9 @@
         <!-- Botão para enviar o cadastro -->
         <Button
             android:id="@+id/buttonSubmitRegister"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
             android:text="Cadastrar"
             android:background="@drawable/button_background"
             android:textColor="#FFFFFF"
@@ -182,8 +185,9 @@
         <!-- Botão de Voltar com o fundo personalizado -->
         <Button
             android:id="@+id/buttonBack"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
             android:text="Voltar"
             android:layout_marginTop="8dp"
             android:background="@drawable/button_background"
