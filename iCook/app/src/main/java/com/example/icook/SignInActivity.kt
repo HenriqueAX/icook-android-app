@@ -1,100 +1,184 @@
 package com.example.icook
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.Toast
+import android.view.View
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 
-// Activity responsável pelo processo de login com Google
 class SignInActivity : AppCompatActivity() {
 
-    companion object {
-        private const val RC_SIGN_IN = 9001 // Código de requisição para o Sign-In
-    }
+    private lateinit var auth: FirebaseAuth
+    private lateinit var dbHelper: DatabaseHelper
 
-    private lateinit var auth: FirebaseAuth // Instância do FirebaseAuth para autenticação
+    private lateinit var editTextName: EditText
+    private lateinit var editTextEmail: EditText
+    private lateinit var editTextPassword: EditText
+    private lateinit var loginButtonsContainer: LinearLayout
+    private lateinit var registerButtonsContainer: LinearLayout
+    private lateinit var googleButtonContainer: LinearLayout
+    private lateinit var buttonLogin: Button
+    private lateinit var buttonRegister: Button
+    private lateinit var buttonSubmitRegister: Button
+    private lateinit var buttonBack: Button
+    private lateinit var signInButton: Button
+    private lateinit var textInfo: TextView
+
+    private var isRegisterMode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_in) // Define o layout da Activity
+        setContentView(R.layout.activity_sign_in)
 
-        // Inicializa a instância do FirebaseAuth
         auth = FirebaseAuth.getInstance()
+        dbHelper = DatabaseHelper(this)
 
-        // Verifica se já existe um usuário logado
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            // Usuário já está logado, navega para a MainActivity
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish() // Finaliza a SignInActivity para evitar retorno com o botão "voltar"
+        editTextName = findViewById(R.id.editTextName)
+        editTextEmail = findViewById(R.id.editTextEmail)
+        editTextPassword = findViewById(R.id.editTextPassword)
+        loginButtonsContainer = findViewById(R.id.loginButtonsContainer)
+        registerButtonsContainer = findViewById(R.id.registerButtonsContainer)
+        googleButtonContainer = findViewById(R.id.googleButtonContainer)
+        buttonLogin = findViewById(R.id.buttonLogin)
+        buttonRegister = findViewById(R.id.buttonRegister)
+        buttonSubmitRegister = findViewById(R.id.buttonSubmitRegister)
+        buttonBack = findViewById(R.id.buttonBack)
+        signInButton = findViewById(R.id.signInButton)
+        textInfo = findViewById(R.id.textInfo)
+
+        buttonLogin.setOnClickListener {
+            if (isRegisterMode) {
+                switchToLoginMode()
+            } else {
+                performLogin()
+            }
         }
 
-        // Referência ao botão de login com Google
-        val signInButton = findViewById<Button>(R.id.signInButton)
+        buttonRegister.setOnClickListener {
+            switchToRegisterMode()
+        }
+
+        buttonSubmitRegister.setOnClickListener {
+            performRegistration()
+        }
+
+        buttonBack.setOnClickListener {
+            switchToLoginMode()
+        }
+
         signInButton.setOnClickListener {
-            signIn() // Chama a função de login quando o botão é clicado
+            signInWithGoogle()
         }
     }
 
-    // Função que inicia o processo de login com Google
-    private fun signIn() {
-        // Configura as opções de login do Google
+    private fun switchToRegisterMode() {
+        isRegisterMode = true
+        editTextName.visibility = View.VISIBLE
+        loginButtonsContainer.visibility = View.GONE
+        registerButtonsContainer.visibility = View.VISIBLE
+        googleButtonContainer.visibility = View.GONE // Oculta o botão do Google no modo de cadastro
+        textInfo.text = "Preencha os dados para cadastrar-se"
+    }
+
+    private fun switchToLoginMode() {
+        isRegisterMode = false
+        editTextName.visibility = View.GONE
+        loginButtonsContainer.visibility = View.VISIBLE
+        registerButtonsContainer.visibility = View.GONE
+        googleButtonContainer.visibility = View.VISIBLE // Mostra o botão do Google no modo de login
+        textInfo.text = "Faça login ou cadastre-se"
+    }
+
+    private fun performLogin() {
+        val email = editTextEmail.text.toString()
+        val password = editTextPassword.text.toString()
+
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Por favor, preencha todos os campos", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val user = dbHelper.getUserByEmail(email)
+        if (user != null && user.password == password) {
+            Toast.makeText(this, "Login bem-sucedido", Toast.LENGTH_SHORT).show()
+            navigateToMainActivity(user.name)
+        } else {
+            Toast.makeText(this, "E-mail ou senha incorretos", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun performRegistration() {
+        val name = editTextName.text.toString()
+        val email = editTextEmail.text.toString()
+        val password = editTextPassword.text.toString()
+
+        if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Por favor, preencha todos os campos", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val newUser = User(0, name, email, password)
+        val isAdded = dbHelper.addUser(newUser)
+
+        if (isAdded) {
+            Toast.makeText(this, "Cadastro realizado com sucesso", Toast.LENGTH_SHORT).show()
+            switchToLoginMode()
+        } else {
+            Toast.makeText(this, "Erro ao cadastrar usuário. E-mail já registrado.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun signInWithGoogle() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id)) // Solicita o ID Token
-            .requestEmail() // Solicita o email do usuário
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
             .build()
 
-        // Cria um cliente de GoogleSignIn com as opções configuradas
         val googleSignInClient = GoogleSignIn.getClient(this, gso)
-        val signInIntent = googleSignInClient.signInIntent // Cria o Intent de login
-        startActivityForResult(signInIntent, RC_SIGN_IN) // Inicia a Activity de login
+        val signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
-    // Método chamado quando a Activity de login retorna um resultado
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        // Verifica se o resultado é do Google Sign-In
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
-                // Tenta obter a conta do Google a partir do Intent
                 val account = task.getResult(ApiException::class.java)
-                firebaseAuthWithGoogle(account.idToken!!) // Autentica com o Firebase usando o ID Token
+                firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
-                // Exibe uma mensagem de erro se o login falhar
                 Toast.makeText(this, "Google sign in failed: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    // Função que autentica o usuário com o Firebase usando o ID Token do Google
     private fun firebaseAuthWithGoogle(idToken: String) {
-        // Cria uma credencial do GoogleAuthProvider com o ID Token
         val credential = GoogleAuthProvider.getCredential(idToken, null)
-
-        // Autentica com o Firebase usando a credencial
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Autenticação bem-sucedida
-                    val user = auth.currentUser
-                    Toast.makeText(this, "Signed in as ${user?.displayName}", Toast.LENGTH_SHORT).show()
-
-                    // Navega para a MainActivity após o login bem-sucedido
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish() // Finaliza a SignInActivity para evitar retorno com o botão "voltar"
+                    Toast.makeText(this, "Login com Google bem-sucedido", Toast.LENGTH_SHORT).show()
+                    navigateToMainActivity(auth.currentUser?.displayName ?: "Usuário")
                 } else {
-                    // Autenticação falhou, exibe uma mensagem de erro
-                    Toast.makeText(this, "Authentication failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Falha na autenticação", Toast.LENGTH_SHORT).show()
                 }
             }
+    }
+
+    private fun navigateToMainActivity(userName: String) {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("USER_NAME", userName)
+        startActivity(intent)
+        finish()
+    }
+
+    companion object {
+        private const val RC_SIGN_IN = 9001
     }
 }
